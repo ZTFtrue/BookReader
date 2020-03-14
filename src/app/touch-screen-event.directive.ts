@@ -31,7 +31,7 @@ export class TouchScreenEventDirective {
     const pageY = event.pageY;
     const screenX = event.view.innerWidth;
     const screenY = event.view.innerHeight;
-    if (pageX > screenX / 4 && pageX < screenX * 3 / 4 && pageY > screenY / 4 && pageY < screenY * 3 / 4) {
+    if (pageX > screenX / 5 && pageX < screenX * 4 / 5) {
       this.onclick.emit(event);
       event.preventDefault();
     }

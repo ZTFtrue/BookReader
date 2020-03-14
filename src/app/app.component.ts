@@ -1,8 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { CdkDragEnd } from '@angular/cdk/drag-drop';
-import { TouchEmitter } from './touch-emitter';
-import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
+import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
+import { TouchEmitter } from './touch-emitter';
 // import { ePub  } from '@angular/core';
 declare var ePub: any;
 @Component({
@@ -13,25 +12,14 @@ declare var ePub: any;
 
 export class AppComponent implements OnInit, AfterViewInit {
 
-  centered = false;
-  disabled = false;
-  unbounded = false;
-
-  radius: number;
-  color: string;
-
-  title = 'ReaderBookAngular';
-  dragPosition = { x: 0, y: 0 };
-  opened = false;
-  currentSectionIndex = 8;
   // Load the opf
   rendition: any;
   book: any;
   touchEventStart: TouchEmitter;
   touchEventLast: TouchEmitter;
   navigationData: any = null;
-  @ViewChild('inputfile', { static: true }) inputfile: ElementRef;
-  @ViewChild('mainDiv', { static: false }) mainDiv: ElementRef;
+  @ViewChild('inputfile', { static: false }) inputfile: ElementRef;
+  @ViewChild('drawer', { static: false }) drawer: MatDrawer;
   constructor(
     public dialog: MatDialog,
     public detector: NgZone,
@@ -111,21 +99,17 @@ export class AppComponent implements OnInit, AfterViewInit {
         // Enable swipe gesture to flip a page
         let start: Touch;
         let end: Touch;
-
         el.addEventListener('touchstart', (event: TouchEvent) => {
           start = event.changedTouches[0];
         });
-        el.addEventListener('click', (event: any) => {
-          // const mouse = event.changedTouches[0];
-          const clientX = event.clientX;
-          const clientY = event.clientY;
-          const screenX = event.screenX;
-          const screenY = event.screenY;
-          if (clientX > screenX / 4 && clientX < screenX * 3 / 4 && clientY > screenY / 4 && clientY < screenY * 3 / 4) {
-            this.opened = true;
-            event.preventDefault();
-          }
-        });
+        // el.addEventListener('click', (event: any) => {
+        //   const clientX = event.clientX;
+        //   const screenX = event.screenX;
+        //   if (clientX > screenX / 5 && clientX < screenX * 4 / 5 &&) {
+        //     this.detector.run(() => (this.drawer.toggle()));
+        //     event.preventDefault();
+        //   }
+        // });
         el.addEventListener('touchend', (event: TouchEvent) => {
           end = event.changedTouches[0];
           const screenX = event.view.innerWidth;
@@ -137,45 +121,24 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
       }
     });
-    //   rendition = book.renderTo("viewer", {
-    //     width: "100%",
-    //     height: 600
-    //   });
 
-    //   rendition.display();
-
-    const keyListener = (e) => {
-
-      // Left Key
-      if ((e.keyCode || e.which) === 37) {
-        this.rendition.prev();
-      }
-
-      // Right Key
-      if ((e.keyCode || e.which) === 39) {
-        this.nextPage();
-      }
-
-    };
     this.book.loaded.navigation.then((toc: any) => {
       console.log(toc);
       this.navigationData = toc;
     });
-    this.rendition.on('keyup', keyListener);
+    this.rendition.on('keyup', (e: any) => {
+      // Left Key
+      if ((e.keyCode || e.which) === 37) {
+        this.rendition.prev();
+      }
+      // Right Key
+      if ((e.keyCode || e.which) === 39) {
+        this.nextPage();
+      }
+    });
     this.rendition.on('relocated', (location) => {
       console.log(location);
     });
-
-    //   next.addEventListener("click", function(e){
-    //     rendition.next();
-    //     e.preventDefault();
-    //   }, false);
-
-    //   prev.addEventListener("click", function(e){
-    //     rendition.prev();
-    //     e.preventDefault();
-    //   }, false);
-    document.addEventListener('keyup', keyListener, false);
   }
   nextPage() {
     if (this.rendition) {
@@ -186,11 +149,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.rendition) {
       this.rendition.prev();
     }
-  }
-  dragEnd($event: CdkDragEnd) {
-    // console.log($event.source.getFreeDragPosition());
-    console.log($event.distance);
-    this.dragPosition = { x: 0, y: 0 };
   }
   touchOnMove(event: TouchEmitter) {
     this.touchEventLast = event;

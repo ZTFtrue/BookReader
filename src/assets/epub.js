@@ -9654,7 +9654,7 @@ var IframeView = function () {
 
 			// this.element.style.minHeight = "100px";
 			element.style.height = "0px";
-			element.style.width = "0px";
+			element.style.width = "100%";
 			element.style.overflow = "hidden";
 			element.style.position = "relative";
 			element.style.display = "block";
@@ -9904,7 +9904,7 @@ var IframeView = function () {
 			var size;
 
 			if ((0, _core.isNumber)(width)) {
-				this.element.style.width = width + "px";
+				// this.element.style.width = width + "px";
 				this.iframe.style.width = width + "px";
 				this._width = width;
 			}

@@ -1,5 +1,5 @@
-<mat-sidenav-container class="main-container">
-  <mat-sidenav  onselectstart="return false" #drawer class="drawer-container" [(opened)]="opened">
+<mat-drawer-container #sidenavContainer class="main-container">
+  <mat-drawer  onselectstart="return false" #drawer class="drawer-container">
     <div class="tool-bar">
       <button mat-raised-button color="primary" (click)="uploadFileClick()">
         <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
@@ -13,13 +13,13 @@
         {{ navigation.label }}
       </div>
     </div>
-  </mat-sidenav>
-  <mat-sidenav-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
+  </mat-drawer>
+  <mat-drawer-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
     (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-    <div id="viewer" #mainDiv>
+    <div id="viewer" >
       <div class="drag-box" matTooltip="Open navigation" (click)="drawer.toggle()">
         目录
       </div>
     </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </mat-drawer-content>
+</mat-drawer-container>
