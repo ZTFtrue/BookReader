@@ -1,0 +1,48 @@
+#viewer {
+  width: 90vw;
+  /* height: 90vh; */
+  /* overflow: auto; */
+  /* margin: 0 auto; */
+  /* background-color: bisque; */
+}
+
+.main-div {
+  background: bisque;
+  height: calc( 100vh - 44px );
+}
+
+.tool-bar {
+  height: 44px;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+}
+
+.navigation-item:hover {
+  background: burlywood;
+}
+
+.navigation-item {
+  background: bisque;
+}
+
+.example-container {
+  background: bisque;
+  margin-top: 44px;
+  height: calc(100vh - 44px);
+}
+
+.drawer-container {
+  height: calc(100vh - 44px);
+  max-width: calc(100vw * 0.75 );
+  min-width: calc(100vw * 0.1 );
+  background: bisque;
+}
+
+.example-icon {
+  padding: 0 0 0 0;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
