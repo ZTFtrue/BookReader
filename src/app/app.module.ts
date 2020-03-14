@@ -9,6 +9,8 @@ import { MatButtonModule, MatDialogModule, MatBottomSheetModule,
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TouchScreenEventDirective } from './touch-screen-event.directive';
 import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.co
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule,
+    MatRippleModule
   ],
   entryComponents: [
     DialogNavgationComponent,

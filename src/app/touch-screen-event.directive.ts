@@ -17,42 +17,41 @@ export class TouchScreenEventDirective {
   @Output() touchOnMove = new EventEmitter();
   @Output() touchOnStart = new EventEmitter();
   @Output() touchOnEnd = new EventEmitter();
+  @Output() onclick = new EventEmitter();
   @Input() forbidCopy = false;
   @Input() useBrowser = false;
   touchEventStart;
+  start;
+
   constructor() {
+  }
+  @HostListener('click', ['$event']) onClickEvent(event: any) {
+    console.log(event);
+    const pageX = event.pageX;
+    const pageY = event.pageY;
+    const screenX = event.view.innerWidth;
+    const screenY = event.view.innerHeight;
+    if (pageX > screenX / 4 && pageX < screenX * 3 / 4 && pageY > screenY / 4 && pageY < screenY * 3 / 4) {
+      this.onclick.emit(event);
+      event.preventDefault();
+    }
   }
 
   @HostListener('touchstart', ['$event']) onTouchStart(event: any) {
-    const mouse = event.touches[0];
-    const pageX = mouse.pageX;
-    const pageY = mouse.pageY;
-    const screenX = event.view.innerWidth;
-    const screenY = event.view.innerHeight;
-    if (pageX < screenX / 5) {// 从左往右, 向前 1
-      this.touchOnStart.emit(new TouchEmitter(pageX, pageY, screenX, screenY, 1));
-    } else if (pageX > screenX * 4 / 5) {// 从右往左, 向后 0
-      this.touchOnStart.emit(new TouchEmitter(pageX, pageY, screenX, screenY, 0));
-    }
-    // event.preventDefault();
+    this.start = event.changedTouches[0];
   }
   @HostListener('touchend', ['$event']) onTouchEnd(event: any) {
-    this.touchOnEnd.emit();
-  }
-  @HostListener('touchmove', ['$event']) onTouchMove(event: any) {
-    const mouse = event.touches[0];
-    const pageX = mouse.pageX;
-    const pageY = mouse.pageY;
+    const end = event.changedTouches[0];
     const screenX = event.view.innerWidth;
     const screenY = event.view.innerHeight;
-    if (pageX < screenX / 6) {// 从左往右, 向前 1
-      this.touchOnMove.emit(new TouchEmitter(pageX, pageY, screenX, screenY, 1));
-    } else if (pageX > screenX * 5 / 6) {// 从右往左, 向后 0
-      this.touchOnMove.emit(new TouchEmitter(pageX, pageY, screenX, screenY, 0));
-    } else {
-      this.touchOnMove.emit(new TouchEmitter(pageX, pageY, screenX, screenY, 2));
+    const hr = (end.screenX - this.start.screenX) / screenX;
+    const vr = Math.abs((end.screenY - this.start.screenY) / screenY);
+    if (hr > 0.25 && vr < 0.2) {
+      this.touchOnEnd.emit(new TouchEmitter(0, 0, screenX, screenY, 1));
     }
-    event.preventDefault();
+    if (hr < -0.25 && vr < 0.2) {
+      this.touchOnEnd.emit(new TouchEmitter(0, 0, screenX, screenY, 0));
+    }
   }
 
   @HostListener('mousewheel', ['$event']) onMouseWheelChrome(event: any) {

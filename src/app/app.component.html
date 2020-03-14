@@ -1,30 +1,25 @@
-<div class="tool-bar">
-  <button mat-raised-button color="primary" (click)="uploadFileClick()">
-    <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
-    上传文件
-  </button>
-  <button mat-raised-button color="primary" (click)="previewPage()" [disabled]="navigationData===null">
-    Preview
-  </button>
-  <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="navigationData===null">
-    Next
-  </button>
-  <button mat-raised-button color="{{drawer.opened?'accent':'primary'}}" (click)="drawer.toggle()" [disabled]="navigationData===null">
-    目录
-  </button>
-  <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-</div>
-<mat-drawer-container class="example-container">
-  <mat-drawer #drawer class="drawer-container">
-    <mat-list *ngIf="navigationData">
-      <mat-list-item class="navigation-item" *ngFor="let navigation of navigationData.toc" (click)="selectNavigation($event, navigation)">
+<mat-sidenav-container class="main-container">
+  <mat-sidenav  onselectstart="return false" #drawer class="drawer-container" [(opened)]="opened">
+    <div class="tool-bar">
+      <button mat-raised-button color="primary" (click)="uploadFileClick()">
+        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
+        上传文件
+      </button>
+      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+    </div>
+    <div *ngIf="navigationData" style="top:40px;height: 100px;">
+      <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
+        (click)="selectNavigation($event, navigation)">
         {{ navigation.label }}
-      </mat-list-item>
-    </mat-list>
-  </mat-drawer>
-  <mat-drawer-content>
-      <div id="viewer" #mainDiv class="main-div scrolled" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
-      (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd()">
       </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
+    (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
+    <div id="viewer" #mainDiv>
+      <div class="drag-box" matTooltip="Open navigation" (click)="drawer.toggle()">
+        目录
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
