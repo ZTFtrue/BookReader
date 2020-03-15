@@ -126,17 +126,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       console.log(toc);
       this.navigationData = toc;
     });
-    this.rendition.on('keyup', (e: any) => {
+    this.rendition.on('keyup', (event: any) => {
       // Left Key
-      if ((e.keyCode || e.which) === 37) {
+      if ((event.keyCode || event.which) === 37) {
         this.rendition.prev();
       }
       // Right Key
-      if ((e.keyCode || e.which) === 39) {
+      if ((event.keyCode || event.which) === 39) {
         this.nextPage();
       }
     });
-    this.rendition.on('relocated', (location) => {
+    this.rendition.on('relocated', (location: any) => {
       console.log(location);
     });
   }
