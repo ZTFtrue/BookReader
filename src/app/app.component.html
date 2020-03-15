@@ -2,7 +2,7 @@
   <mat-drawer onselectstart="return false" #drawer class="drawer-container">
     <div class="tool-bar">
       <button mat-raised-button color="primary" (click)="uploadFileClick()">
-        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
+        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub,.mobi">
         上传文件
       </button>
       <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
