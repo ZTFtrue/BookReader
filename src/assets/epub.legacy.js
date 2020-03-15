@@ -13255,7 +13255,7 @@ var IframeView = function () {
 			element.classList.add("epub-view");
 
 			// this.element.style.minHeight = "100px";
-			element.style.height = "0px";
+			element.style.height = "100%";
 			element.style.width = "100%";
 			element.style.overflow = "hidden";
 			element.style.position = "relative";
@@ -13512,7 +13512,7 @@ var IframeView = function () {
 			}
 
 			if ((0, _core.isNumber)(height)) {
-				this.element.style.height = height + "px";
+				// this.element.style.height = height + "px";
 				this.iframe.style.height = height + "px";
 				this._height = height;
 			}

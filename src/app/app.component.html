@@ -1,22 +1,30 @@
 <mat-drawer-container #sidenavContainer class="main-container">
-  <mat-drawer  onselectstart="return false" #drawer class="drawer-container">
-    <div class="tool-bar">
-      <button mat-raised-button color="primary" (click)="uploadFileClick()">
-        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
-        上传文件
-      </button>
-      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-    </div>
-    <div *ngIf="navigationData" style="top:40px;height: 100px;">
-      <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
-        (click)="selectNavigation($event, navigation)">
-        {{ navigation.label }}
+  <mat-drawer onselectstart="return false" #drawer class="drawer-container">
+    <div>
+      <div class="tool-bar">
+        <button mat-raised-button color="primary" (click)="uploadFileClick()">
+          <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
+          上传文件
+        </button>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
       </div>
+
+      <mat-tab-group *ngIf="navigationData">
+        <mat-tab label="Navigation">
+          <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
+            (click)="selectNavigation($event, navigation)">
+            {{ navigation.label }}
+          </div>
+        </mat-tab>
+        <mat-tab label="BookMarks">
+
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </mat-drawer>
   <mat-drawer-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
     (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-    <div id="viewer" >
+    <div id="viewer">
       <div class="drag-box" matTooltip="Open navigation" (click)="drawer.toggle()">
         目录
       </div>

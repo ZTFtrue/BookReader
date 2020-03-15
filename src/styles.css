@@ -8,6 +8,11 @@
    height: 100%;
    width: 100%;
  }
+
  #viewer .ebup-container {
-  overflow-x: hidden !important;
-}
+   overflow-x: hidden !important;
+ }
+
+ * {
+   box-sizing: border-box;
+ }

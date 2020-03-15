@@ -11,6 +11,7 @@ import { TouchScreenEventDirective } from './touch-screen-event.directive';
 import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatRippleModule} from '@angular/material/core';
+import { MatTabsModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {MatRippleModule} from '@angular/material/core';
     MatToolbarModule,
     MatIconModule,
     MatTooltipModule,
-    MatRippleModule
+    MatRippleModule,
+    MatTabsModule
   ],
   entryComponents: [
     DialogNavgationComponent,
