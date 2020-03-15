@@ -12,6 +12,7 @@ import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.co
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatRippleModule} from '@angular/material/core';
 import { MatTabsModule} from '@angular/material';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { MatTabsModule} from '@angular/material';
     DialogNavgationComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -1,28 +1,25 @@
 <mat-drawer-container #sidenavContainer class="main-container">
   <mat-drawer onselectstart="return false" #drawer class="drawer-container">
-    <div>
-      <div class="tool-bar">
-        <button mat-raised-button color="primary" (click)="uploadFileClick()">
-          <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
-          上传文件
-        </button>
-        <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-        <a href="https://github.com/futurepress/epub.js">epub.js
-        </a>
-      </div>
-
-      <mat-tab-group *ngIf="navigationData">
-        <mat-tab label="Navigation">
-          <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
-            (click)="selectNavigation($event, navigation)">
-            {{ navigation.label }}
-          </div>
-        </mat-tab>
-        <mat-tab label="BookMarks">
-
-        </mat-tab>
-      </mat-tab-group>
+    <div class="tool-bar">
+      <button mat-raised-button color="primary" (click)="uploadFileClick()">
+        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
+        上传文件
+      </button>
+      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+      <a href="https://github.com/futurepress/epub.js">epub.js
+      </a>
     </div>
+    <mat-tab-group *ngIf="navigationData">
+      <mat-tab label="Navigation">
+        <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
+          (click)="selectNavigation($event, navigation)">
+          {{ navigation.label }}
+        </div>
+      </mat-tab>
+      <mat-tab label="BookMarks">
+
+      </mat-tab>
+    </mat-tab-group>
   </mat-drawer>
   <mat-drawer-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
     (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
