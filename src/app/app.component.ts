@@ -184,5 +184,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     const url = navigation.href;
     this.rendition.display(url);
   }
+  doSearch(q) {
+    return Promise.all(
+      this.book.spine.spineItems.map(item =>
+        item.load(this.book.load.bind(this.book))
+          .then(item.find.bind(item, q))
+          .finally(item.unload.bind(item)))
+    ).then(results => Promise.resolve([].concat.apply([], results)));
+  }
 
+  doChapterSearch(q) {
+    let item = this.book.spine.get(this.rendition.location.start.cfi);
+    return item.load(this.book.load.bind(this.book)).then(item.find.bind(item, q)).finally(item.unload.bind(item));
+  }
 }

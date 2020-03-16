@@ -1,18 +1,26 @@
 <mat-drawer-container #sidenavContainer class="main-container">
   <mat-drawer onselectstart="return false" #drawer class="drawer-container">
-    <div class="tool-bar">
-      <button mat-raised-button color="primary" (click)="uploadFileClick()">
+    <div onselectstart="return false" class="menu-tool-bar">
+      <div class="menu-tool-bar-button" matRipple color="primary" (click)="uploadFileClick()">
         <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub,.mobi">
-        上传文件
-      </button>
-      <button mat-raised-button color="primary">
+        Open File
+      </div>
+      <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary">
         Settings
-      </button>
+      </div>
+      <div *ngIf="navigationData" class="menu-tool-bar-button" [hidden]="!drawer.opened&&navigationData" matRipple
+        matTooltip="Search All">
+        Search All
+      </div>
+      <div *ngIf="navigationData" class="menu-tool-bar-button" [hidden]="!drawer.opened&&navigationData" matRipple
+        matTooltip=" Search Current Chapter">
+        Search Chapter
+      </div>
       <!-- <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon> -->
-      <a href="https://github.com/futurepress/epub.js">epub.js
-      </a>
+      <!-- <a href="https://github.com/futurepress/epub.js">epub.js
+      </a> -->
     </div>
-    <mat-tab-group *ngIf="navigationData">
+    <mat-tab-group *ngIf="navigationData" class="menu-tab-group">
       <mat-tab label="Navigation">
         <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
           (click)="selectNavigation($event, navigation)">
@@ -22,13 +30,16 @@
       <mat-tab label="BookMarks">
 
       </mat-tab>
+      <mat-tab label="Notes">
+
+      </mat-tab>
     </mat-tab-group>
   </mat-drawer>
   <mat-drawer-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
     (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
     <div id="viewer">
-      <div class="drag-box" matTooltip="Open navigation" (click)="drawer.toggle()">
-        目录
+      <div class="contain-tool-bar-button" matRipple matTooltip="Open navigation" (click)="drawer.toggle()">
+        Navigation
       </div>
     </div>
   </mat-drawer-content>
