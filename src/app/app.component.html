@@ -9,12 +9,8 @@
         Settings
       </div>
       <div *ngIf="navigationData" class="menu-tool-bar-button" [hidden]="!drawer.opened&&navigationData" matRipple
-        matTooltip="Search All">
-        Search All
-      </div>
-      <div *ngIf="navigationData" class="menu-tool-bar-button" [hidden]="!drawer.opened&&navigationData" matRipple
-        matTooltip=" Search Current Chapter">
-        Search Chapter
+        matTooltip="Search Current Chapter" (click)="onOpenSearchDialog($event)">
+        Search
       </div>
       <!-- <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon> -->
       <!-- <a href="https://github.com/futurepress/epub.js">epub.js

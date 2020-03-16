@@ -1,0 +1,10 @@
+<form  [formGroup]="searchControl" ovalidate (ngSubmit)="onSubmit(searchControl.value)" >
+  <mat-form-field appearance="legacy">
+    <mat-label>Input search word</mat-label>
+    <input matInput formControlName="searchKeyWord" name="searchWords" placeholder="Search word" />
+  </mat-form-field>
+  <section class="example-section">
+    <mat-checkbox class="example-margin" name="searchAll" formControlName="searchAll">Search All</mat-checkbox>
+  </section>
+  <button type="submit">Submit</button>
+</form>

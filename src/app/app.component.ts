@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from 
 import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
 import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
 import { TouchEmitter } from './touch-emitter';
+import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 // import { ePub  } from '@angular/core';
 declare var ePub: any;
 @Component({
@@ -164,37 +165,22 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.previewPage();
     }
   }
-  onOpenNavigation(event: MouseEvent) {
-    this.book.loaded.navigation.then((toc: any) => {
-      console.log(toc);
-      const bottomRef = this.bottomSheet.open(DialogNavgationComponent, {
-        autoFocus: false,
-        restoreFocus: false,
-        data: toc
-      });
-      bottomRef.afterDismissed().subscribe(result => {
-        if (result) {
-          // this.getBookMarks();
-        }
-      });
+  onOpenSearchDialog(event: MouseEvent) {
+
+    const dialogRef = this.dialog.open(SearchDialogComponent, {
+      autoFocus: false,
+      restoreFocus: false,
+      data: { book: this.book, location: this.rendition.location.start.cfi }
     });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.animal = result;
+    });
+
   }
   selectNavigation(event: any, navigation: any) {
     console.log(navigation);
     const url = navigation.href;
     this.rendition.display(url);
-  }
-  doSearch(q) {
-    return Promise.all(
-      this.book.spine.spineItems.map(item =>
-        item.load(this.book.load.bind(this.book))
-          .then(item.find.bind(item, q))
-          .finally(item.unload.bind(item)))
-    ).then(results => Promise.resolve([].concat.apply([], results)));
-  }
-
-  doChapterSearch(q) {
-    let item = this.book.spine.get(this.rendition.location.start.cfi);
-    return item.load(this.book.load.bind(this.book)).then(item.find.bind(item, q)).finally(item.unload.bind(item));
   }
 }
