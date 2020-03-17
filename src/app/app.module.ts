@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatDialogModule, MatBottomSheetModule,
-  MatListModule, MatSidenavModule, MatToolbarModule, MatIconModule, MatInputModule, MatCheckboxModule
+  MatListModule, MatSidenavModule, MatToolbarModule, MatIconModule,
+   MatInputModule, MatCheckboxModule, MatProgressBarModule
 } from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TouchScreenEventDirective } from './touch-screen-event.directive';
@@ -46,7 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressBarModule
   ],
   entryComponents: [
     DialogNavgationComponent,

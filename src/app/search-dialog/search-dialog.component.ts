@@ -18,6 +18,8 @@ export class SearchDialogComponent implements OnInit {
   });
   book: any;
   location: any;
+  resItems: any = null;
+  searching = false;
   constructor(
     public dialogRef: MatDialogRef<SearchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -27,26 +29,48 @@ export class SearchDialogComponent implements OnInit {
 
   ngOnInit() {
   }
-  onSubmit(f) {
-    this.doSearch(f.searchKeyWord);
+  onSubmit(f: any) {
+    if (!f.searchKeyWord) {
+      return;
+    }
+    this.searching = true;
+    if (f.searchAll) {
+      this.doSearch(f.searchKeyWord);
+    } else {
+      this.doChapterSearch(f.searchKeyWord);
+    }
   }
-  doSearch(q) {
-    const res = Promise.all(
+  doSearch(q: string) {
+    this.resItems = null;
+    Promise.all(
       this.book.spine.spineItems.map(item =>
         item.load(this.book.load.bind(this.book))
           .then(item.find.bind(item, q))
-          .finally(item.unload.bind(item)))
-    ).then(results => Promise.resolve([].concat.apply([], results)));
-    res.then(r => {
-      console.log(r);
-    })
+          .finally(item.unload.bind(item))
+      )
+    ).then(results => {
+      const rea = [].concat.apply([], results);
+      this.resItems = rea;
+      this.searching = false;
+    });
   }
 
-  doChapterSearch(q) {
+  doChapterSearch(q: string) {
+    this.resItems = null;
     const item = this.book.spine.get(this.location);
     const res = item.load(this.book.load.bind(this.book)).then(item.find.bind(item, q)).finally(item.unload.bind(item));
     res.then(r => {
-      console.log(r)
+      this.resItems = r;
+      this.searching = false;
     });
+  }
+  /*
+  *0:
+cfi: "epubcfi(/6/10[id4]!/4/8,/1:62,/1:63)"
+excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人开的冷面馆子..."
+
+  */
+  selectNavigation($event, item: any) {
+    this.dialogRef.close(item.cfi);
   }
 }

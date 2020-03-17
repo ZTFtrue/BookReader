@@ -1,4 +1,5 @@
-<form  [formGroup]="searchControl" ovalidate (ngSubmit)="onSubmit(searchControl.value)" >
+<form class="bookreader-search-form-view" [formGroup]="searchControl" ovalidate
+  (ngSubmit)="onSubmit(searchControl.value)">
   <mat-form-field appearance="legacy">
     <mat-label>Input search word</mat-label>
     <input matInput formControlName="searchKeyWord" name="searchWords" placeholder="Search word" />
@@ -6,5 +7,16 @@
   <section class="example-section">
     <mat-checkbox class="example-margin" name="searchAll" formControlName="searchAll">Search All</mat-checkbox>
   </section>
-  <button type="submit">Submit</button>
+  <button class="search-button" matRipple type="submit">Search</button>
 </form>
+<div *ngIf="!searching&&(resItems!=null&&resItems.length===0)">
+  No result
+</div>
+<div *ngIf="resItems" class="bookreader-search-res-view">
+  <div  class="bookreader-search-res-item-view" matRipple *ngFor="let item of resItems"  (click)="selectNavigation($event, item)">
+    <!-- -->
+    {{ item.excerpt }}
+  </div>
+</div>
+<mat-progress-bar *ngIf="searching" mode="indeterminate">
+</mat-progress-bar>

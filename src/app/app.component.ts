@@ -168,13 +168,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   onOpenSearchDialog(event: MouseEvent) {
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
+      height: '80vh',
+      width: '80vh',
       autoFocus: false,
       restoreFocus: false,
       data: { book: this.book, location: this.rendition.location.start.cfi }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
+      this.detector.run(() => (this.drawer.close()));
+      this.rendition.display(result);
     });
 
   }
