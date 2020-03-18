@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
-import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
 import { TouchEmitter } from './touch-emitter';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -185,21 +184,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.previewPage();
     }
   }
-  onOpenSearchDialog(event: MouseEvent) {
 
-    const dialogRef = this.dialog.open(SearchDialogComponent, {
-      height: '80vh',
-      width: '80vh',
-      autoFocus: false,
-      restoreFocus: false,
-      data: { book: this.book, location: this.rendition.location.start.cfi }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.detector.run(() => (this.drawer.close()));
-      this.rendition.display(result);
-    });
-
-  }
   onSubmit(f: any) {
     if (!f.searchKeyWord) {
       return;
@@ -239,7 +224,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   *0:
 cfi: "epubcfi(/6/10[id4]!/4/8,/1:62,/1:63)"
 excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人开的冷面馆子..."
-
   */
   selectNavigationForSearch($event, item: any) {
     this.detector.run(() => (this.search = false));
