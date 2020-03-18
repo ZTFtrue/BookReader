@@ -57,10 +57,9 @@
         No result
       </div>
       <div *ngIf="resItems" class="bookreader-search-res-view">
-        <div class="bookreader-search-res-item-view" matRipple *ngFor="let item of resItems"
-          (click)="selectNavigationForSearch($event, item)">
-          <!-- -->
+        <div class="bookreader-search-res-item-view" *ngFor="let item of resItems">
           {{ item.excerpt }}
+          <div class="search-button" onselectstart="return false" matRipple (click)="selectNavigationForSearch($event, item)">Go to</div>
         </div>
       </div>
       <mat-progress-bar *ngIf="searching" mode="indeterminate">
