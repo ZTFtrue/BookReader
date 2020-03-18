@@ -3,6 +3,7 @@ import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
 import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
 import { TouchEmitter } from './touch-emitter';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 // import { ePub  } from '@angular/core';
 declare var ePub: any;
 @Component({
@@ -19,6 +20,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   touchEventStart: TouchEmitter;
   touchEventLast: TouchEmitter;
   navigationData: any = null;
+
+  searchControl = new FormGroup({
+    searchKeyWord: new FormControl(null, [
+      Validators.required,
+      Validators.nullValidator, Validators.minLength(1), Validators.maxLength(2000)
+    ]),
+    searchAll: new FormControl(false, [])
+  });
+  location: any;
+  resItems: any = null;
+  searching = false;
+  search = false;
   @ViewChild('inputfile', { static: false }) inputfile: ElementRef;
   @ViewChild('drawer', { static: false }) drawer: MatDrawer;
   constructor(
@@ -187,6 +200,53 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
   }
+  onSubmit(f: any) {
+    if (!f.searchKeyWord) {
+      return;
+    }
+    this.searching = true;
+    if (f.searchAll) {
+      this.doSearch(f.searchKeyWord);
+    } else {
+      this.doChapterSearch(f.searchKeyWord);
+    }
+  }
+  doSearch(q: string) {
+    this.resItems = null;
+    Promise.all(
+      this.book.spine.spineItems.map(item =>
+        item.load(this.book.load.bind(this.book))
+          .then(item.find.bind(item, q))
+          .finally(item.unload.bind(item))
+      )
+    ).then(results => {
+      const rea = [].concat.apply([], results);
+      this.resItems = rea;
+      this.searching = false;
+    });
+  }
+
+  doChapterSearch(q: string) {
+    this.resItems = null;
+    const item = this.book.spine.get(this.location);
+    const res = item.load(this.book.load.bind(this.book)).then(item.find.bind(item, q)).finally(item.unload.bind(item));
+    res.then(r => {
+      this.resItems = r;
+      this.searching = false;
+    });
+  }
+  /*
+  *0:
+cfi: "epubcfi(/6/10[id4]!/4/8,/1:62,/1:63)"
+excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人开的冷面馆子..."
+
+  */
+  selectNavigationForSearch($event, item: any) {
+    this.detector.run(() => (this.search = false));
+    this.rendition.display(item.cfi);
+  }
+
+
   selectNavigation(event: any, navigation: any) {
     console.log(navigation);
     const url = navigation.href;
