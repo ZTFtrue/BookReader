@@ -1,6 +1,10 @@
 # ReaderBookAngular
 
+If you have question , please request issue.
+
 ## Preview
+
+[go to](https://ztftrue.github.io/BookReader/)
 
 ![main](./screenshot/main.png)
 
