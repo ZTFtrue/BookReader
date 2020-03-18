@@ -18,6 +18,7 @@ export class TouchScreenEventDirective {
   @Output() touchOnStart = new EventEmitter();
   @Output() touchOnEnd = new EventEmitter();
   @Output() onclick = new EventEmitter();
+  @Output() onKeyUp = new EventEmitter();
   @Input() forbidCopy = false;
   @Input() useBrowser = false;
   touchEventStart;
@@ -34,6 +35,19 @@ export class TouchScreenEventDirective {
     if (pageX > screenX / 5 && pageX < screenX * 4 / 5) {
       this.onclick.emit(event);
       event.preventDefault();
+    }
+  }
+  @HostListener('window:keyup', ['$event']) onKeyUpEvent(event: any) {
+    // Left Key
+    console.log(event);
+    if ((event.keyCode || event.which) === 37) {
+      this.onKeyUp.emit(0);
+      //  this.previewPage();
+    }
+    // Right Key
+    if ((event.keyCode || event.which) === 39) {
+      this.onKeyUp.emit(1);
+      //  this.nextPage();
     }
   }
 

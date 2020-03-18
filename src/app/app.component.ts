@@ -130,7 +130,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rendition.on('keyup', (event: any) => {
       // Left Key
       if ((event.keyCode || event.which) === 37) {
-        this.rendition.prev();
+        this.previewPage();
       }
       // Right Key
       if ((event.keyCode || event.which) === 39) {
@@ -149,6 +149,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   previewPage() {
     if (this.rendition) {
       this.rendition.prev();
+    }
+  }
+  onKeyUp(event: number) { // without type info
+    if (event === 0) {
+      this.previewPage();
+    } else if (event === 1) {
+      this.nextPage();
     }
   }
   touchOnMove(event: TouchEmitter) {

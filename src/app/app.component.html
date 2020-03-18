@@ -31,8 +31,8 @@
       </mat-tab>
     </mat-tab-group>
   </mat-drawer>
-  <mat-drawer-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onclick)="drawer.toggle()"
-    (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
+  <mat-drawer-content appTouchScreenEvent (touchOnMove)="touchOnMove($event)" (onKeyUp)="onKeyUp(($event))"
+    (onclick)="drawer.toggle()"  (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)" tabindex="37">
     <div id="viewer">
       <div class="contain-tool-bar-button" matRipple matTooltip="Open navigation" (click)="drawer.toggle()">
         Navigation
