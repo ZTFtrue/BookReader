@@ -10,7 +10,7 @@ If you have question , please request issue.
 
 ![navigation](./screenshot/navigation.png)
 
-![钱](./screenshot/serach1.png)
+![钱](./screenshot/search1.png)
 
 ![女朋友](./screenshot/serach2.png)
 
