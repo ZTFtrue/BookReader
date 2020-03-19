@@ -4,7 +4,7 @@ If you have question , please request issue.
 
 ## Preview
 
-[go to](https://ztftrue.github.io/BookReader/)
+[Online Preview go to](https://ztftrue.github.io/BookReader/)
 
 ![main](./screenshot/main.png)
 
@@ -33,3 +33,5 @@ When the build is complete, make a copy of docs/index.html and name it docs/404.
 Commit your changes and push.
 
 On the GitHub project page, configure it to publish from the docs folder.
+
+## Based of  [epub.js](https://github.com/futurepress/epub.js)
