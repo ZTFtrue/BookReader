@@ -76,25 +76,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   processFiles(file: any): void {
     file = file.target.files[0];
     if (file) {
-      console.log(file.path);
-      // if (window.FileReader) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        console.log(e);
         this.openBook(e);
       };
       reader.readAsArrayBuffer(file);
-      // }
     }
   }
   openBook(e: any) {
     const bookData = e.target.result;
-    // var title = document.getElementById("title");
-    // var next = document.getElementById("next");
-    // var prev = document.getElementById("prev");
     this.book = ePub();
     this.book.open(bookData, 'binary');
-    console.log(this.book);
     this.rendition = this.book.renderTo('viewer', {
       method: 'continuous',
       // method: 'default',
@@ -110,6 +102,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rendition.themes.fontSize('140%');
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
+      contents.innerHeight = contents.innerHeight * 2;
       if (el) {
         // Enable swipe gesture to flip a page
         let start: Touch;
@@ -177,7 +170,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   touchOnStart(event: TouchEmitter) {
     this.touchEventStart = event;
-    console.log(event);
   }
   touchOnEnd(touchend: TouchEmitter) {
     if (touchend.direction === 0) {
@@ -228,7 +220,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       } else {
         this.showMainSearchButton = true;
       }
-      console.log(this.showMainSearchButton);
       this.resItems = r;
       this.searching = false;
     });
@@ -244,7 +235,6 @@ excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人�
   }
 
   selectNavigation(event: any, navigation: any) {
-    console.log(navigation);
     const url = navigation.href;
     this.rendition.display(url);
   }
