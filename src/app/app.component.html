@@ -8,10 +8,14 @@
       <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary">
         Settings
       </div>
+      <div class="menu-tool-bar-button" matRipple mat-raised-button (click)="fullScreen()" color="primary">
+        Full Screen
+      </div>
       <div *ngIf="navigationData" class="menu-tool-bar-button" [hidden]="!drawer.opened&&navigationData" matRipple
-        matTooltip="Search Current Chapter" (click)="search=true;drawer.close()">
+        matTooltip="Search Current Chapter" (click)="search=true;drawer.close();showMainSearchButton=true">
         Search
       </div>
+
       <!-- <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon> -->
       <!-- <a href="https://github.com/futurepress/epub.js">epub.js
       </a> -->
@@ -34,9 +38,11 @@
   <mat-drawer-content>
     <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
       (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-      <div class="contain-tool-bar-button" matRipple matTooltip="Open navigation" (click)="drawer.toggle()">
+      <div class="contain-tool-bar-button" matRipple matTooltip="Open navigation"
+        (click)="drawer.toggle();showMainSearchButton=false">
         Navigation
       </div>
+      <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button>
     </div>
     <div id="viewer" style="padding: 40px;height: 100%;" [hidden]="!search">
       <div class="contain-tool-bar-button" matRipple matTooltip="Back to read" (click)="search=false">
@@ -59,7 +65,8 @@
       <div *ngIf="resItems" class="bookreader-search-res-view">
         <div class="bookreader-search-res-item-view" *ngFor="let item of resItems">
           {{ item.excerpt }}
-          <div class="search-button" onselectstart="return false" matRipple (click)="selectNavigationForSearch($event, item)">Go to</div>
+          <div class="search-button" onselectstart="return false" matRipple
+            (click)="selectNavigationForSearch($event, item)">Go to</div>
         </div>
       </div>
       <mat-progress-bar *ngIf="searching" mode="indeterminate">

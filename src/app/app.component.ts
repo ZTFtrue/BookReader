@@ -31,6 +31,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   resItems: any = null;
   searching = false;
   search = false;
+  showMainSearchButton = false;
+
   @ViewChild('inputfile', { static: false }) inputfile: ElementRef;
   @ViewChild('drawer', { static: false }) drawer: MatDrawer;
   constructor(
@@ -206,6 +208,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       )
     ).then(results => {
       const rea = [].concat.apply([], results);
+      if (rea.length === 0) {
+        this.showMainSearchButton = false;
+      } else {
+        this.showMainSearchButton = true;
+      }
       this.resItems = rea;
       this.searching = false;
     });
@@ -216,6 +223,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     const item = this.book.spine.get(this.location);
     const res = item.load(this.book.load.bind(this.book)).then(item.find.bind(item, q)).finally(item.unload.bind(item));
     res.then(r => {
+      if (r.length === 0) {
+        this.showMainSearchButton = false;
+      } else {
+        this.showMainSearchButton = true;
+      }
+      console.log(this.showMainSearchButton);
       this.resItems = r;
       this.searching = false;
     });
@@ -230,10 +243,20 @@ excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人�
     this.rendition.display(item.cfi);
   }
 
-
   selectNavigation(event: any, navigation: any) {
     console.log(navigation);
     const url = navigation.href;
     this.rendition.display(url);
+  }
+
+  fullScreen() {
+    const element: any = document.documentElement;
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    }
   }
 }
