@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
 import { TouchEmitter } from './touch-emitter';
-import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
+import { Settings } from './settings';
 // import { ePub  } from '@angular/core';
 declare var ePub: any;
 @Component({
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   touchEventStart: TouchEmitter;
   touchEventLast: TouchEmitter;
   navigationData: any = null;
-
+  testUrl: string;
   searchControl = new FormGroup({
     searchKeyWord: new FormControl(null, [
       Validators.required,
@@ -92,14 +93,18 @@ export class AppComponent implements OnInit, AfterViewInit {
       // method: 'default',
       // manager: 'continuous',
       manager: 'default',
-      flow: 'scrolled-doc',
+      flow: 'scrolled',
       // flow: 'auto',
       // flow: "paginated",
       width: '100%',
       height: '100%'
     });
-    this.rendition.display();
+    console.log(this.rendition);
+    // this.rendition.spread('always',1000);
     this.rendition.themes.fontSize('140%');
+    this.rendition.display();
+    // this.rendition.resize()
+    console.log(this.rendition.themes._overrides['font-size'].value);
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
       contents.innerHeight = contents.innerHeight * 2;
@@ -236,6 +241,7 @@ excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人�
 
   selectNavigation(event: any, navigation: any) {
     const url = navigation.href;
+    this.testUrl = url;
     this.rendition.display(url);
   }
 
@@ -248,5 +254,21 @@ excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人�
     } else if (element.mozRequestFullScreen) {
       element.mozRequestFullScreen();
     }
+  }
+  openSettingsDialog() {
+    const dialogRef = this.dialog.open(DialogSettingsComponent, {
+      // width: '250px',
+      hasBackdrop: false,
+      data: new Settings(this.rendition.themes._overrides['font-size'].value, '')
+    });
+
+    dialogRef.afterClosed().subscribe((result: Settings) => {
+      if (result) {
+        const location = this.rendition.currentLocation().start;
+        this.rendition.themes.fontSize(result.fontSizeValue);
+        this.rendition.display();
+        this.rendition.display(location.cfi);
+      }
+    });
   }
 }

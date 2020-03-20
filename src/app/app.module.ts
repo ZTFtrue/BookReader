@@ -7,16 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatDialogModule, MatBottomSheetModule,
   MatListModule, MatSidenavModule, MatToolbarModule, MatIconModule,
-   MatInputModule, MatCheckboxModule, MatProgressBarModule
+  MatInputModule, MatCheckboxModule, MatProgressBarModule, MatCardModule, MatSliderModule
 } from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TouchScreenEventDirective } from './touch-screen-event.directive';
-import { DialogNavgationComponent } from './dialog-navgation/dialog-navgation.component';
+import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
-import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -24,8 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     TouchScreenEventDirective,
-    DialogNavgationComponent,
-    SearchDialogComponent
+    DialogSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,11 +46,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCardModule,
+    MatSliderModule
   ],
   entryComponents: [
-    DialogNavgationComponent,
-    SearchDialogComponent
+    DialogSettingsComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

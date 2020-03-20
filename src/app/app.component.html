@@ -5,7 +5,7 @@
         <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub,.mobi">
         Open File
       </div>
-      <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary">
+      <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary" (click)="drawer.close();openSettingsDialog()">
         Settings
       </div>
       <div class="menu-tool-bar-button" matRipple mat-raised-button (click)="fullScreen()" color="primary">

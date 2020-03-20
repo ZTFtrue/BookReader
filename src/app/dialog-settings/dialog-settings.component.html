@@ -1,0 +1,11 @@
+<mat-card class="example-result-card">
+  <mat-card-content>
+    <h2>Font Size</h2>
+    <mat-slider thumbLabel   [displayWith]="formatLabel" tickInterval="150" min="50"  (change)="fontSizeChange($event)" [(ngModel)]="value" max="200"></mat-slider>
+  </mat-card-content>
+
+</mat-card>
+<div class="dialog-bottom">
+  <button mat-button (click)="dismissDialog()">Cancel</button>
+  <button mat-raised-button class="dialog-button-delete" (click)="confirm()">Confirm</button>
+</div>
