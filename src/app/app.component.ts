@@ -15,8 +15,8 @@ declare var ePub: any;
 export class AppComponent implements OnInit, AfterViewInit {
 
   // Load the opf
-  rendition: any;
-  book: any;
+  rendition: any = null;
+  book: any = null;
   touchEventStart: TouchEmitter;
   touchEventLast: TouchEmitter;
   navigationData: any = null;
@@ -101,7 +101,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     console.log(this.rendition);
     // this.rendition.spread('always',1000);
-    this.rendition.themes.fontSize('140%');
+    // aslo can set px
+    const settings = JSON.parse(localStorage.getItem('result'));
+    if (settings) {
+      this.rendition.themes.fontSize(settings.fontSizeValue);
+    } else {
+      this.rendition.themes.fontSize('140%');
+    }
     this.rendition.display();
     // this.rendition.resize()
     console.log(this.rendition.themes._overrides['font-size'].value);
@@ -256,18 +262,29 @@ excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人�
     }
   }
   openSettingsDialog() {
+    const settings = JSON.parse(localStorage.getItem('result'));
+    // if (settings) {
+    //   this.rendition.themes.fontSize(settings.fontSizeValue);
+    // } else {
+    //   this.rendition.themes.fontSize('140%');
+    // }
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       // width: '250px',
       hasBackdrop: false,
-      data: new Settings(this.rendition.themes._overrides['font-size'].value, '')
+      data: this.rendition === null ?
+        settings ? { settings: new Settings(settings.fontSizeValue, ''), rendition: this.rendition } : null
+        : { settings: new Settings(this.rendition.themes._overrides['font-size'].value, ''), rendition: this.rendition }
     });
 
     dialogRef.afterClosed().subscribe((result: Settings) => {
       if (result) {
-        const location = this.rendition.currentLocation().start;
-        this.rendition.themes.fontSize(result.fontSizeValue);
-        this.rendition.display();
-        this.rendition.display(location.cfi);
+        if (this.rendition) {
+          const location = this.rendition.currentLocation().start;
+          this.rendition.themes.fontSize(result.fontSizeValue);
+          this.rendition.display();
+          this.rendition.display(location.cfi);
+        }
+        localStorage.setItem('result', JSON.stringify(result));
       }
     });
   }
