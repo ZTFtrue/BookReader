@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
 import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
 import { TouchEmitter } from './touch-emitter';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -21,6 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   touchEventLast: TouchEmitter;
   navigationData: any = null;
   testUrl: string;
+  bookName: string = null;
   searchControl = new FormGroup({
     searchKeyWord: new FormControl(null, [
       Validators.required,
@@ -41,6 +42,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     public detector: NgZone,
     private bottomSheet: MatBottomSheet,
   ) {
+  }
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event) {
+    // ...
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event) {
+    if (this.book) {
+      const chars = 1650;
+      const key = `${this.book.key()}:locations-${chars}`;
+      localStorage.setItem(key, JSON.stringify(this.rendition.currentLocation().end.cfi));
+    }
   }
   ngOnInit(): void {
 
@@ -68,6 +82,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   // console.log(toc);
     // });
   }
+
   uploadFileClick() {
     this.inputfile.nativeElement.click();
   }
@@ -76,6 +91,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   */
   processFiles(file: any): void {
     file = file.target.files[0];
+    this.bookName = file.name;
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -85,6 +101,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   openBook(e: any) {
+
     const bookData = e.target.result;
     this.book = ePub();
     this.book.open(bookData, 'binary');
@@ -157,6 +174,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     this.rendition.on('relocated', (location: any) => {
       console.log(location);
+    });
+    this.book.ready.then(() => {
+      const chars = 1650;
+      const key = `${this.book.key()}:locations-${chars}`;
+      const stored = JSON.parse(localStorage.getItem(key));
+      if (stored) {
+        localStorage.removeItem(key);
+        return this.rendition.display(stored);
+      }
     });
   }
   nextPage() {
@@ -237,8 +263,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   /*
   *0:
-cfi: "epubcfi(/6/10[id4]!/4/8,/1:62,/1:63)"
-excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人开的冷面馆子..."
+  cfi: "epubcfi(/6/10[id4]!/4/8,/1:62,/1:63)"
+  excerpt: "...↵我像傻瓜一样混进首吠破的似乎是纯种老北京人开的冷面馆子..."
   */
   selectNavigationForSearch($event, item: any) {
     this.detector.run(() => (this.search = false));
