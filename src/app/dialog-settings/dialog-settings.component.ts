@@ -13,9 +13,9 @@ export class DialogSettingsComponent implements OnInit {
   changeValue = -1;
   theme: string;
   rendition;
-
+  mainNavigationButtonOpacity = 1;
   constructor(private dialogRef: MatDialogRef<DialogSettingsComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
       console.log(data);
@@ -47,8 +47,9 @@ export class DialogSettingsComponent implements OnInit {
     this.dialogRef.close(null);
   }
   confirm(): void {
+
     if (this.changeValue !== -1 || this.valueTemp !== this.changeValue) {
-      this.dialogRef.close(new Settings(this.changeValue + '%', this.theme));
+      this.dialogRef.close(new Settings(this.changeValue + '%', this.theme, this.mainNavigationButtonOpacity));
     } else {
       this.dialogRef.close(null);
     }

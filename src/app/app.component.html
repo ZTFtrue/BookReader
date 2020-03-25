@@ -5,7 +5,8 @@
         <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub,.mobi">
         Open File
       </div>
-      <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary" (click)="drawer.close();openSettingsDialog()">
+      <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary"
+        (click)="drawer.close();openSettingsDialog()">
         Settings
       </div>
       <div class="menu-tool-bar-button" matRipple mat-raised-button (click)="fullScreen()" color="primary">
@@ -34,8 +35,8 @@
   <mat-drawer-content>
     <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
       (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-      <div class="contain-tool-bar-button" matRipple matTooltip="Open navigation"
-        (click)="drawer.toggle();showMainSearchButton=false">
+      <div [ngStyle]="{'opacity':navigationData===null ? '0.5' : '1' }" class="contain-tool-bar-button" matRipple
+        matTooltip="Open navigation" (click)="drawer.toggle();showMainSearchButton=false">
         Navigation
       </div>
       <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button>
