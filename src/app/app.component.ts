@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
-import { MatBottomSheet, MatDialog, MatDrawer } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDrawer } from '@angular/material/sidenav';
 import { TouchEmitter } from './touch-emitter';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
