@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   navigationData: any = null;
   testUrl: string;
   bookName: string = null;
+  mainNavigationButtonOpacity = 1;
   searchControl = new FormGroup({
     searchKeyWord: new FormControl(null, [
       Validators.required,
@@ -59,30 +60,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   ngOnInit(): void {
-
+    const settings = JSON.parse(localStorage.getItem('result'));
+    if (settings) {
+      if (settings.mainNavigationButtonOpacity) {// 向下兼容
+        this.mainNavigationButtonOpacity = settings.mainNavigationButtonOpacity;
+      }
+    }
   }
   ngAfterViewInit(): void {
-    // this.rendition.themes.default({ "p": { "font-size": "medium !important"}})
-    // this.rendition.themes.register("dark", "themes.css");
-    // this.rendition.themes.register("light", "themes.css");
-    // this.rendition.themes.register("tan", "themes.css");
-    //  this.rendition.themes.default({
-    //   h2: {
-    //     'font-size': '32px',
-    //     color: 'purple'
-    //   },
-    //   p: {
-    //     "margin": '10px'
-    //   }
-    // });
-    // this.rendition.themes.select("dark");
-    // const displayed = this.rendition.display('epubcfi(/6/14[xchapter_001]!4/2/24/2[c001p0011]/1:799)');
-    // displayed.then((renderer: any) => {
-    // });
-    // 目录
-    // this.book.loaded.navigation.then((toc: any) => {
-    //   // console.log(toc);
-    // });
   }
 
   uploadFileClick() {
@@ -124,6 +109,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     const settings = JSON.parse(localStorage.getItem('result'));
     if (settings) {
       this.rendition.themes.fontSize(settings.fontSizeValue);
+      if (settings.mainNavigationButtonOpacity) {// 向下兼容
+        this.mainNavigationButtonOpacity = settings.mainNavigationButtonOpacity;
+      }
     } else {
       this.rendition.themes.fontSize('140%');
     }
@@ -297,11 +285,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   this.rendition.themes.fontSize('140%');
     // }
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
-      // width: '250px',
+      width: '80vw',
       hasBackdrop: false,
       data: this.rendition === null ?
-        settings ? { settings: new Settings(settings.fontSizeValue, ''), rendition: this.rendition } : null
-        : { settings: new Settings(this.rendition.themes._overrides['font-size'].value, ''), rendition: this.rendition }
+        settings ? {
+          settings: new Settings(settings.fontSizeValue, '', this.mainNavigationButtonOpacity),
+          rendition: this.rendition
+        } : null
+        : {
+          settings: new Settings(this.rendition.themes._overrides['font-size'].value, '',
+            this.mainNavigationButtonOpacity), rendition: this.rendition
+        }
     });
 
     dialogRef.afterClosed().subscribe((result: Settings) => {
@@ -312,6 +306,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.rendition.display();
           this.rendition.display(location.cfi);
         }
+        this.mainNavigationButtonOpacity = result.mainNavigationButtonOpacity;
         localStorage.setItem('result', JSON.stringify(result));
       }
     });

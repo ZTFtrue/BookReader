@@ -35,7 +35,7 @@
   <mat-drawer-content>
     <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
       (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-      <div [ngStyle]="{'opacity':navigationData===null ? '0.5' : '1' }" class="contain-tool-bar-button" matRipple
+      <div [ngStyle]="{'opacity':mainNavigationButtonOpacity}" class="contain-tool-bar-button" matRipple
         matTooltip="Open navigation" (click)="drawer.toggle();showMainSearchButton=false">
         Navigation
       </div>

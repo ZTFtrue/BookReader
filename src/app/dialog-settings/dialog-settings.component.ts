@@ -16,11 +16,12 @@ export class DialogSettingsComponent implements OnInit {
   rendition;
   mainNavigationButtonOpacity = 1;
   constructor(private dialogRef: MatDialogRef<DialogSettingsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
       console.log(data);
       this.valueTemp = data.settings.fontSizeValue.replace('%', '');
+      this.mainNavigationButtonOpacity = data.settings.mainNavigationButtonOpacity;
       this.value = this.valueTemp;
       this.rendition = data.rendition;
     }
