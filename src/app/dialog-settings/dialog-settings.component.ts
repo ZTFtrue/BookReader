@@ -16,13 +16,14 @@ export class DialogSettingsComponent implements OnInit {
   rendition;
   mainNavigationButtonOpacity = 1;
   constructor(private dialogRef: MatDialogRef<DialogSettingsComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
       console.log(data);
       this.valueTemp = data.settings.fontSizeValue.replace('%', '');
       this.mainNavigationButtonOpacity = data.settings.mainNavigationButtonOpacity;
       this.value = this.valueTemp;
+      this.changeValue = this.valueTemp;
       this.rendition = data.rendition;
     }
   }
@@ -43,17 +44,11 @@ export class DialogSettingsComponent implements OnInit {
   }
   dismissDialog(): void {
     if (this.rendition) {
-      console.log(this.valueTemp + '%');
       this.rendition.themes.fontSize(this.valueTemp + '%');
     }
     this.dialogRef.close(null);
   }
   confirm(): void {
-
-    if (this.changeValue !== -1 || this.valueTemp !== this.changeValue) {
-      this.dialogRef.close(new Settings(this.changeValue + '%', this.theme, this.mainNavigationButtonOpacity));
-    } else {
-      this.dialogRef.close(null);
-    }
+    this.dialogRef.close(new Settings(this.changeValue + '%', this.theme, this.mainNavigationButtonOpacity));
   }
 }

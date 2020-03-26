@@ -284,6 +284,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // } else {
     //   this.rendition.themes.fontSize('140%');
     // }
+    const valueSizeTemp = this.rendition.themes._overrides['font-size'].value;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
@@ -301,10 +302,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: Settings) => {
       if (result) {
         if (this.rendition) {
-          const location = this.rendition.currentLocation().start;
-          this.rendition.themes.fontSize(result.fontSizeValue);
-          this.rendition.display();
-          this.rendition.display(location.cfi);
+          if (valueSizeTemp !== result.fontSizeValue) {
+            const location = this.rendition.currentLocation().start;
+            this.rendition.themes.fontSize(result.fontSizeValue);
+            this.rendition.display();
+            this.rendition.display(location.cfi);
+          }
         }
         this.mainNavigationButtonOpacity = result.mainNavigationButtonOpacity;
         localStorage.setItem('result', JSON.stringify(result));
