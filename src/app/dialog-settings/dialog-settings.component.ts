@@ -16,7 +16,7 @@ export class DialogSettingsComponent implements OnInit {
   rendition;
   mainNavigationButtonOpacity = 1;
   constructor(private dialogRef: MatDialogRef<DialogSettingsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
       console.log(data);

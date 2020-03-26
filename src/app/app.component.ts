@@ -284,7 +284,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // } else {
     //   this.rendition.themes.fontSize('140%');
     // }
-    const valueSizeTemp = this.rendition.themes._overrides['font-size'].value;
+    const valueSizeTemp = this.rendition ? this.rendition.themes._overrides['font-size'].value : null;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
