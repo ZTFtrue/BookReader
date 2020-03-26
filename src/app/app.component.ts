@@ -35,8 +35,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   search = false;
   showMainSearchButton = false;
 
-  @ViewChild('inputfile', { static: false }) inputfile: ElementRef;
-  @ViewChild('drawer', { static: false }) drawer: MatDrawer;
+  @ViewChild('inputfile') inputfile: ElementRef;
+  @ViewChild('drawer') drawer: MatDrawer;
   constructor(
     public dialog: MatDialog,
     public detector: NgZone,
