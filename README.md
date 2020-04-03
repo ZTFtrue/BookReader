@@ -13,6 +13,7 @@ If you have question , please request issue.
 ![钱](./screenshot/search1.png)
 
 ![女朋友](./screenshot/serach2.png)
+![theme](./screenshot/theme.png)
 
 ## Development server
 
