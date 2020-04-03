@@ -39,8 +39,6 @@
           matTooltip="Open navigation" (click)="drawer.toggle();showMainSearchButton=false">
           Navigation
         </div>
-        <button mat-flat-button color="primary" >Search</button>
-
         <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button>
       </div>
       <div id="viewer" style="padding: 40px;height: 100%;" [hidden]="!search">
