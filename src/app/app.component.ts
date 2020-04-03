@@ -26,6 +26,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   testUrl: string;
   bookName: string = null;
   mainNavigationButtonOpacity = 1;
+  theme: string;
   searchControl = new FormGroup({
     searchKeyWord: new FormControl(null, [
       Validators.required,
@@ -67,9 +68,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (settings.mainNavigationButtonOpacity) {// 向下兼容
         this.mainNavigationButtonOpacity = settings.mainNavigationButtonOpacity;
       }
+      if (settings.theme) {
+        this.theme = settings.theme;
+        this.document.body.classList.replace(this.document.body.classList[0], settings.theme);
+      } else {
+        this.theme = this.document.body.classList[0];
+      }
     }
   }
   ngAfterViewInit(): void {
+
+
   }
 
   uploadFileClick() {
@@ -298,11 +307,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       hasBackdrop: false,
       data: this.rendition === null ?
         settings ? {
-          settings: new Settings(settings.fontSizeValue, '', this.mainNavigationButtonOpacity),
+          settings: new Settings(settings.fontSizeValue, this.theme, this.mainNavigationButtonOpacity),
           rendition: this.rendition
         } : null
         : {
-          settings: new Settings(this.rendition.themes._overrides['font-size'].value, '',
+          settings: new Settings(this.rendition.themes._overrides['font-size'].value, this.theme,
             this.mainNavigationButtonOpacity), rendition: this.rendition
         }
     });
