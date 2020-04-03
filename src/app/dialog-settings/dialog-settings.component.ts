@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSliderChange } from '@angular/material/slider';
 import { Settings } from '../settings';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-dialog-settings',
@@ -15,8 +16,9 @@ export class DialogSettingsComponent implements OnInit {
   theme: string;
   rendition;
   mainNavigationButtonOpacity = 1;
-  constructor(private dialogRef: MatDialogRef<DialogSettingsComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(
+    private dialogRef: MatDialogRef<DialogSettingsComponent>,
+    @Inject(DOCUMENT) private document: Document, @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
       console.log(data);
@@ -50,5 +52,8 @@ export class DialogSettingsComponent implements OnInit {
   }
   confirm(): void {
     this.dialogRef.close(new Settings(this.changeValue + '%', this.theme, this.mainNavigationButtonOpacity));
+  }
+  changeTheme(event, theme: string) {
+    this.document.body.classList.toggle(theme);
   }
 }

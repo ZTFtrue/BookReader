@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, HostListener, Inject } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -6,6 +6,7 @@ import { TouchEmitter } from './touch-emitter';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { Settings } from './settings';
+import { DOCUMENT } from '@angular/common';
 // import { ePub  } from '@angular/core';
 declare var ePub: any;
 @Component({
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     public detector: NgZone,
     private bottomSheet: MatBottomSheet,
+    @Inject(DOCUMENT) private document: Document,
   ) {
   }
   @HostListener('window:unload', ['$event'])
@@ -120,6 +122,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log(this.rendition.themes._overrides['font-size'].value);
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
+      // console.log(contents.addClass('iframe-html-body'));
       contents.innerHeight = contents.innerHeight * 2;
       if (el) {
         // Enable swipe gesture to flip a page
@@ -162,6 +165,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.nextPage();
       }
     });
+    // this.rendition.themes.default({
+    //   defalt: 'bookreader-dark-theme',
+    // });
+    const style = getComputedStyle(this.document.body);
+    this.rendition.themes.default({ body: { color: style.color, font: style.font } });
     this.rendition.on('relocated', (location: any) => {
       console.log(location);
     });
@@ -314,4 +322,5 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
 }

@@ -2,12 +2,13 @@
   padding: 30px 0 50px 0;
 }
 
-.navigation-item:hover {
-  background: burlywood;
+.navigation-item {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+  0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .menu-tool-bar {
-  background-color: bisque;
   z-index: 2;
   display: flex;
   top: 0;
@@ -19,12 +20,10 @@
 }
 
 .navigation-item {
-  background: bisque;
   padding: 10px 10px 10px 10px;
 }
 
 .main-container {
-  background: bisque;
   height: 100vh;
   margin: 0 !important;
   padding: 0 !important;
@@ -34,19 +33,16 @@
   height: 100%;
   max-width: calc(100vw * 0.75);
   min-width: calc(100vw * 0.1);
-  background: bisque;
 }
 
 .menu-tool-bar-button {
   padding: 10px;
   border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
   border-radius: 5px;
   top: 0;
   right: 0;
@@ -63,13 +59,11 @@
 .main-search-button {
   padding: 10px;
   border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
   position: fixed;
   border-radius: 5px;
   top: 0;
@@ -87,13 +81,11 @@
 .contain-tool-bar-button {
   padding: 10px;
   border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
   position: fixed;
   border-radius: 5px;
   top: 0;
@@ -119,13 +111,11 @@
   outline: none;
   padding: 10px;
   border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
   border-radius: 5px;
   top: 0;
   right: 0;
@@ -151,13 +141,11 @@
 .bookreader-search-res-item-view {
   padding: 10px;
   border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
   border-radius: 5px;
   top: 0;
   right: 0;

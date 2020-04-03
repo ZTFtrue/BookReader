@@ -1,18 +1,17 @@
- html,
- body {
-   margin: 0;
-   background: bisque;
-   font-family: "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif;
-   color: #333;
-   position: absolute;
-   height: 100%;
-   width: 100%;
- }
+/* @import '@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+html,
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 
- #viewer .ebup-container {
-   overflow-x: hidden !important;
- }
+#viewer .ebup-container {
+  overflow-x: hidden !important;
+}
 
- * {
-   box-sizing: border-box;
- }
+* {
+  box-sizing: border-box;
+}

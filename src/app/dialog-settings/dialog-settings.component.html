@@ -1,7 +1,7 @@
 <mat-card class="bookreader-result-card">
   <mat-card-content class="bookreader-child-input-view">
     <h2>Font Size</h2>
-    <mat-slider class="bookreader-child-input-view" thumbLabel [displayWith]="formatLabel" tickInterval="150" min="50" (change)="fontSizeChange($event)"
+    <mat-slider color="primary" class="bookreader-child-input-view" thumbLabel [displayWith]="formatLabel" tickInterval="150" min="50" (change)="fontSizeChange($event)"
       [(ngModel)]="value" max="200"></mat-slider>
   </mat-card-content>
   <mat-form-field class="bookreader-child-input-view">

@@ -1,4 +1,4 @@
-<mat-drawer-container #sidenavContainer class="main-container">
+<mat-drawer-container  #sidenavContainer class="main-container">
   <mat-drawer onselectstart="return false" #drawer class="drawer-container">
     <div onselectstart="return false" class="menu-tool-bar">
       <div class="menu-tool-bar-button" matRipple color="primary" (click)="uploadFileClick()">
@@ -33,42 +33,44 @@
     </mat-tab-group>
   </mat-drawer>
   <mat-drawer-content>
-    <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
-      (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-      <div [ngStyle]="{'opacity':mainNavigationButtonOpacity}" class="contain-tool-bar-button" matRipple
-        matTooltip="Open navigation" (click)="drawer.toggle();showMainSearchButton=false">
-        Navigation
-      </div>
-      <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button>
-    </div>
-    <div id="viewer" style="padding: 40px;height: 100%;" [hidden]="!search">
-      <div class="contain-tool-bar-button" matRipple matTooltip="Back to read" (click)="search=false">
-        Back to read
-      </div>
-      <form class="bookreader-search-form-view" [formGroup]="searchControl" ovalidate
-        (ngSubmit)="onSubmit(searchControl.value)">
-        <mat-form-field appearance="legacy">
-          <mat-label>Input search word</mat-label>
-          <input matInput formControlName="searchKeyWord" name="searchWords" placeholder="Search word" />
-        </mat-form-field>
-        <section class="example-section">
-          <mat-checkbox class="example-margin" name="searchAll" formControlName="searchAll">Search All</mat-checkbox>
-        </section>
-        <button class="search-button" matRipple type="submit">Search</button>
-      </form>
-      <div *ngIf="!searching&&(resItems!=null&&resItems.length===0)">
-        No result
-      </div>
-      <div *ngIf="resItems" class="bookreader-search-res-view">
-        <div class="bookreader-search-res-item-view" *ngFor="let item of resItems">
-          {{ item.excerpt }}
-          <div class="search-button" onselectstart="return false" matRipple
-            (click)="selectNavigationForSearch($event, item)">Go to</div>
+      <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
+        (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
+        <div [ngStyle]="{'opacity':mainNavigationButtonOpacity}" class="contain-tool-bar-button" matRipple
+          matTooltip="Open navigation" (click)="drawer.toggle();showMainSearchButton=false">
+          Navigation
         </div>
-      </div>
-      <mat-progress-bar *ngIf="searching" mode="indeterminate">
-      </mat-progress-bar>
+        <button mat-flat-button color="primary" >Search</button>
 
-    </div>
+        <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button>
+      </div>
+      <div id="viewer" style="padding: 40px;height: 100%;" [hidden]="!search">
+        <div class="contain-tool-bar-button" matRipple matTooltip="Back to read" (click)="search=false">
+          Back to read
+        </div>
+        <form class="bookreader-search-form-view" [formGroup]="searchControl" ovalidate
+          (ngSubmit)="onSubmit(searchControl.value)">
+          <mat-form-field appearance="legacy">
+            <mat-label>Input search word</mat-label>
+            <input matInput formControlName="searchKeyWord" name="searchWords" placeholder="Search word" />
+          </mat-form-field>
+          <section class="example-section">
+            <mat-checkbox class="example-margin" name="searchAll" formControlName="searchAll">Search All</mat-checkbox>
+          </section>
+          <button class="search-button" matRipple type="submit">Search</button>
+        </form>
+        <div *ngIf="!searching&&(resItems!=null&&resItems.length===0)">
+          No result
+        </div>
+        <div *ngIf="resItems" class="bookreader-search-res-view">
+          <div class="bookreader-search-res-item-view" *ngFor="let item of resItems">
+            {{ item.excerpt }}
+            <div class="search-button" onselectstart="return false" matRipple
+              (click)="selectNavigationForSearch($event, item)">Go to</div>
+          </div>
+        </div>
+        <mat-progress-bar *ngIf="searching" mode="indeterminate">
+        </mat-progress-bar>
+
+      </div>
   </mat-drawer-content>
 </mat-drawer-container>
