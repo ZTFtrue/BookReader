@@ -22,7 +22,6 @@ $dark-accent: mat-palette($mat-blue-gray, A700, 100, A900);
 $dark-warn: mat-palette($mat-pink, A500, A100, A900);
 $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
-// 所有在unicorn-dark-theme样式下的组件主题都将是深色的
 .bookreader-dark-theme {
   @include angular-material-theme($dark-theme);
   $primary: map-get($dark-theme, primary);
