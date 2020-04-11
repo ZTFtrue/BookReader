@@ -30,6 +30,17 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   color: white;
 }
 
+$light-primary: mat-palette($mat-blue-grey);
+$light-accent: mat-palette($mat-pink, 500, 900, A100);
+$light-warn: mat-palette($mat-deep-orange);
+$light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+
+.bookreader-light-theme {
+  @include angular-material-theme($light-theme);
+  $primary: map-get($dark-theme, primary);
+  $accent: map-get($dark-theme, accent);
+  $warn: map-get($dark-theme, warn);
+}
 
 // custom background and foreground palettes
 $bookreader-amber-theme-background: (status-bar: burlywood,
