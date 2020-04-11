@@ -30,8 +30,8 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   color: white;
 }
 
-$light-primary: mat-palette($mat-blue-grey);
-$light-accent: mat-palette($mat-pink, 500, 900, A100);
+$light-primary: mat-palette($mat-blue);
+$light-accent: mat-palette($mat-pink, A500, A900, A100);
 $light-warn: mat-palette($mat-deep-orange);
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
@@ -45,11 +45,11 @@ $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 // custom background and foreground palettes
 $bookreader-amber-theme-background: (status-bar: burlywood,
   app-bar: map_get($mat-amber, 200),
-  background: bisque,
-  background-color:bisque,
+  background: burlywood,
+  background-color:burlywood,
   hover: rgba(white, 0.04),
   card: burlywood,
-  dialog:bisque,
+  dialog:burlywood,
   disabled-button: $white-12-opacity,
   raised-button: burlywood,
   focused-button: $white-6-opacity,

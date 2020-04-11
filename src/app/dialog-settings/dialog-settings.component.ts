@@ -21,8 +21,9 @@ export class DialogSettingsComponent implements OnInit {
   mainNavigationButtonOpacity = 1;
   lastTheme: string;
   themes: BookReaderTheme[] = [
-    { theme: 'bookreader-dark-theme', themeView: '暗黑主题' },
-    { theme: 'bookreader-amber-theme', themeView: '木质主题' },
+    { theme: 'bookreader-dark-theme', themeView: 'Dark Theme' },
+    { theme: 'bookreader-amber-theme', themeView: 'Wood Theme' },
+    { theme: 'bookreader-light-theme', themeView: 'Light Theme' },
   ];
   constructor(
     private dialogRef: MatDialogRef<DialogSettingsComponent>, public detector: NgZone,
