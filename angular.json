@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ReaderBookAngular": {
+    "reader-book-angular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ReaderBookAngular:build"
+            "browserTarget": "reader-book-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ReaderBookAngular:build:production"
+              "browserTarget": "reader-book-angular:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ReaderBookAngular:build"
+            "browserTarget": "reader-book-angular:build"
           }
         },
         "test": {
@@ -115,16 +115,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ReaderBookAngular:serve"
+            "devServerTarget": "reader-book-angular:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ReaderBookAngular:serve:production"
+              "devServerTarget": "reader-book-angular:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "ReaderBookAngular"
+  "defaultProject": "reader-book-angular"
 }
