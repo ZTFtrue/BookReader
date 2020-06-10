@@ -2,7 +2,7 @@
   <mat-drawer onselectstart="return false" #drawer class="drawer-container">
     <div onselectstart="return false" class="menu-tool-bar">
       <div class="menu-tool-bar-button" matRipple color="primary" (click)="uploadFileClick()">
-        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub,.mobi">
+        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
         Open File
       </div>
       <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary"
