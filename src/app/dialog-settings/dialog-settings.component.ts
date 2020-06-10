@@ -37,6 +37,7 @@ export class DialogSettingsComponent implements OnInit {
       this.changeValue = this.valueTemp;
       this.themeTemp = this.data.settings.theme;
       this.lastTheme = this.themeTemp;
+      this.selectedTheme = this.lastTheme;
       this.rendition = data.rendition;
     }
   }

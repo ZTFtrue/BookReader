@@ -326,6 +326,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.rendition.display(location.cfi);
           }
         }
+        this.detector.run(() => (this.document.body.classList.replace(this.theme, result.theme)));
         this.mainNavigationButtonOpacity = result.mainNavigationButtonOpacity;
         localStorage.setItem('result', JSON.stringify(result));
       }
