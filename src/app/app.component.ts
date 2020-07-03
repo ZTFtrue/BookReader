@@ -9,6 +9,8 @@ import { Settings } from './settings';
 import { DOCUMENT } from '@angular/common';
 // import { ePub  } from '@angular/core';
 declare var ePub: any;
+
+const storageString = 'result';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -63,7 +65,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   ngOnInit(): void {
-    const settings = JSON.parse(localStorage.getItem('result'));
+    const settings = JSON.parse(localStorage.getItem(storageString));
     if (settings) {
       if (settings.mainNavigationButtonOpacity) {// 向下兼容
         this.mainNavigationButtonOpacity = settings.mainNavigationButtonOpacity;
@@ -117,12 +119,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log(this.rendition);
     // this.rendition.spread('always',1000);
     // aslo can set px
-    const settings = JSON.parse(localStorage.getItem('result'));
+    const settings = JSON.parse(localStorage.getItem(storageString));
     if (settings) {
       this.rendition.themes.fontSize(settings.fontSizeValue);
-      if (settings.mainNavigationButtonOpacity) {// 向下兼容
-        this.mainNavigationButtonOpacity = settings.mainNavigationButtonOpacity;
-      }
+      this.mainNavigationButtonOpacity = settings?.mainNavigationButtonOpacity;
     } else {
       this.rendition.themes.fontSize('140%');
     }
@@ -140,14 +140,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         el.addEventListener('touchstart', (event: TouchEvent) => {
           start = event.changedTouches[0];
         });
-        // el.addEventListener('click', (event: any) => {
-        //   const clientX = event.clientX;
-        //   const screenX = event.screenX;
-        //   if (clientX > screenX / 5 && clientX < screenX * 4 / 5 &&) {
-        //     this.detector.run(() => (this.drawer.toggle()));
-        //     event.preventDefault();
-        //   }
-        // });
         el.addEventListener('touchend', (event: TouchEvent) => {
           end = event.changedTouches[0];
           const screenX = event.view.innerWidth;
@@ -295,25 +287,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   openSettingsDialog() {
-    const settings = JSON.parse(localStorage.getItem('result'));
-    // if (settings) {
-    //   this.rendition.themes.fontSize(settings.fontSizeValue);
-    // } else {
-    //   this.rendition.themes.fontSize('140%');
-    // }
-    const valueSizeTemp = this.rendition ? this.rendition.themes._overrides['font-size'].value : null;
+    const settings = JSON.parse(localStorage.getItem(storageString));
+    const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
-      data: this.rendition === null ?
-        settings ? {
-          settings: new Settings(settings.fontSizeValue, this.theme, this.mainNavigationButtonOpacity),
-          rendition: this.rendition
-        } : null
-        : {
-          settings: new Settings(this.rendition.themes._overrides['font-size'].value, this.theme,
-            this.mainNavigationButtonOpacity), rendition: this.rendition
-        }
+      data: {
+        settings: new Settings(settings ? settings.fontSizeValue : this.rendition.themes._overrides['font-size'].value,
+          this.theme, this.mainNavigationButtonOpacity),
+        rendition: this.rendition
+      }
     });
 
     dialogRef.afterClosed().subscribe((result: Settings) => {
@@ -328,7 +311,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         this.detector.run(() => (this.document.body.classList.replace(this.theme, result.theme)));
         this.mainNavigationButtonOpacity = result.mainNavigationButtonOpacity;
-        localStorage.setItem('result', JSON.stringify(result));
+        localStorage.setItem(storageString, JSON.stringify(result));
       }
     });
   }
