@@ -30,15 +30,14 @@ export class DialogSettingsComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document, @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
-      console.log(data);
       this.valueTemp = data.settings.fontSizeValue.replace('%', '');
       this.mainNavigationButtonOpacity = data.settings.mainNavigationButtonOpacity;
-      this.value = this.valueTemp;
-      this.changeValue = this.valueTemp;
+      this.rendition = data.rendition;
       this.themeTemp = this.data.settings.theme;
       this.lastTheme = this.themeTemp;
       this.selectedTheme = this.lastTheme;
-      this.rendition = data.rendition;
+      this.value = this.valueTemp;
+      this.changeValue = this.valueTemp;
     }
   }
 
