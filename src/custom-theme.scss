@@ -43,21 +43,21 @@ $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 }
 
 // custom background and foreground palettes
-$bookreader-amber-theme-background: (status-bar: burlywood,
+$bookreader-amber-theme-background: (status-bar: #dcc59b,
   app-bar: map_get($mat-amber, 200),
-  background: burlywood,
-  background-color:burlywood,
+  background: #dcc59b,
+  background-color:#dcc59b,
   hover: rgba(white, 0.04),
-  card: burlywood,
-  dialog:burlywood,
+  card: #dcc59b,
+  dialog:#dcc59b,
   disabled-button: $white-12-opacity,
-  raised-button: burlywood,
+  raised-button: #dcc59b,
   focused-button: $white-6-opacity,
   selected-button: map_get($mat-grey, 900),
   selected-disabled-button: map_get($mat-grey, 800),
-  disabled-button-toggle: black,
+  disabled-button-toggle: #dcc59b,
   unselected-chip: map_get($mat-grey, 700),
-  disabled-list-option: black,
+  disabled-list-option: #dcc59b,
   text: black,
 );
 

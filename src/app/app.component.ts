@@ -128,7 +128,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     this.rendition.display();
     // this.rendition.resize()
-    console.log(this.rendition.themes._overrides['font-size'].value);
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
       // console.log(contents.addClass('iframe-html-body'));
@@ -153,7 +152,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.book.loaded.navigation.then((toc: any) => {
-      console.log(toc);
       this.navigationData = toc;
     });
     this.rendition.on('keyup', (event: any) => {
@@ -288,12 +286,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openSettingsDialog() {
     const settings = JSON.parse(localStorage.getItem(storageString));
+    console.log( this.rendition)
     const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
       data: {
-        settings: new Settings(settings ? settings.fontSizeValue : this.rendition.themes._overrides['font-size'].value,
+        settings: new Settings(settings ? settings.fontSizeValue : this.rendition?.themes._overrides['font-size'].value,
           this.theme, this.mainNavigationButtonOpacity),
         rendition: this.rendition
       }
