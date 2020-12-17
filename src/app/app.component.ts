@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   searching = false;
   search = false;
   showMainSearchButton = false;
-
+  screenWidth = 0;
   @ViewChild('inputfile') inputfile: ElementRef;
   @ViewChild('drawer') drawer: MatDrawer;
   constructor(
@@ -50,6 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private bottomSheet: MatBottomSheet,
     @Inject(DOCUMENT) private document: Document,
   ) {
+    this.screenWidth = document.body.clientWidth;
   }
   @HostListener('window:unload', ['$event'])
   unloadHandler(event) {
@@ -79,7 +80,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   ngAfterViewInit(): void {
-
   }
 
   uploadFileClick() {
@@ -99,8 +99,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       reader.readAsArrayBuffer(file);
     }
   }
+  drawToggle(): void {
+    this.detector.run(() => {
+      this.drawer.toggle();
+    });
+  }
   openBook(e: any) {
-    let vm = this;
     const bookData = e.target.result;
     this.book = ePub();
     this.book.open(bookData, 'binary');
@@ -132,13 +136,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       contents.innerHeight = contents.innerHeight * 2;
       if (el) {
         el.addEventListener('click', (event: MouseEvent) => {
-          const screenX = event.screenX;
-          const screenY = event.screenY;
-          const x = screenX / 3;
+          const screenY = window.screenY;
+          const x =  this.screenWidth / 3;
           const y = screenY / 3;
+          console.log('click', event);
           if (event.clientX > x && event.clientX < x * 2) {
-            console.log(vm.drawer);
-            vm.drawer.toggle();
+            this.drawToggle();
           }
         })
         // Enable swipe gesture to flip a page
