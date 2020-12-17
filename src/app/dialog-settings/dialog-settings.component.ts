@@ -18,7 +18,6 @@ export class DialogSettingsComponent implements OnInit {
   changeValue = -1;
   rendition;
   selectedTheme: string;
-  mainNavigationButtonOpacity = 1;
   lastTheme: string;
   themes: BookReaderTheme[] = [
     { theme: 'bookreader-dark-theme', themeView: 'Dark Theme' },
@@ -31,7 +30,6 @@ export class DialogSettingsComponent implements OnInit {
   ) {
     if (data) {
       this.valueTemp = data.settings?.fontSizeValue?.replace('%', '');
-      this.mainNavigationButtonOpacity = data?.settings?.mainNavigationButtonOpacity;
       this.rendition = data.rendition;
       this.themeTemp = this.data.settings.theme;
       this.lastTheme = this.themeTemp;
@@ -63,7 +61,7 @@ export class DialogSettingsComponent implements OnInit {
     this.dialogRef.close(null);
   }
   confirm(): void {
-    this.dialogRef.close(new Settings(this.changeValue + '%', this.selectedTheme, this.mainNavigationButtonOpacity));
+    this.dialogRef.close(new Settings(this.changeValue + '%', this.selectedTheme));
   }
   changeTheme(theme: string) {
     this.detector.run(() => (this.document.body.classList.replace(this.lastTheme, theme)));

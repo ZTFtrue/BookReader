@@ -4,12 +4,6 @@
     <mat-slider color="primary" class="bookreader-child-input-view" thumbLabel [displayWith]="formatLabel"
       tickInterval="150" min="50" (change)="fontSizeChange($event)" [(ngModel)]="value" max="200"></mat-slider>
   </mat-card-content>
-  <mat-form-field class="bookreader-child-input-view">
-    <mat-label>Main page navigation button opacity, 0 is transparent, 1 is opaque. Input range 0 ~ 1, example 0.5
-    </mat-label>
-    <input maxlength="3" type="number" matInput placeholder="Main page navigation button opacity"
-      [(ngModel)]="mainNavigationButtonOpacity">
-  </mat-form-field>
   <mat-form-field>
     <mat-label>Themes</mat-label>
     <mat-select (selectionChange)="onChangeTheme($event)" [(value)]="selectedTheme" matNativeControl required>

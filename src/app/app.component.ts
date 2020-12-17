@@ -27,7 +27,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   navigationData: any = null;
   testUrl: string;
   bookName: string = null;
-  mainNavigationButtonOpacity = 1;
   theme: string;
   searchControl = new FormGroup({
     searchKeyWord: new FormControl(null, [
@@ -68,9 +67,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     const settings = JSON.parse(localStorage.getItem(storageString));
     if (settings) {
-      if (settings.mainNavigationButtonOpacity) {// 向下兼容
-        this.mainNavigationButtonOpacity = settings.mainNavigationButtonOpacity;
-      }
       if (settings.theme) {
         this.theme = settings.theme;
         this.document.body.classList.replace(this.document.body.classList[0], settings.theme);
@@ -124,7 +120,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     const settings = JSON.parse(localStorage.getItem(storageString));
     if (settings) {
       this.rendition.themes.fontSize(settings.fontSizeValue);
-      this.mainNavigationButtonOpacity = settings?.mainNavigationButtonOpacity;
     } else {
       this.rendition.themes.fontSize('140%');
     }
@@ -299,7 +294,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       hasBackdrop: false,
       data: {
         settings: new Settings(settings ? settings.fontSizeValue : this.rendition?.themes._overrides['font-size'].value,
-          this.theme, this.mainNavigationButtonOpacity),
+          this.theme),
         rendition: this.rendition
       }
     });
@@ -315,7 +310,6 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         }
         this.detector.run(() => (this.document.body.classList.replace(this.theme, result.theme)));
-        this.mainNavigationButtonOpacity = result.mainNavigationButtonOpacity;
         localStorage.setItem(storageString, JSON.stringify(result));
       }
     });
