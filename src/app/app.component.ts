@@ -119,7 +119,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       width: '100%',
       height: '100%'
     });
-    console.log(this.rendition);
     // this.rendition.spread('always',1000);
     // aslo can set px
     const settings = JSON.parse(localStorage.getItem(storageString));
@@ -132,14 +131,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rendition.display();
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
-      // console.log(contents.addClass('iframe-html-body'));
       contents.innerHeight = contents.innerHeight * 2;
       if (el) {
         el.addEventListener('click', (event: MouseEvent) => {
           const screenY = window.screenY;
           const x =  this.screenWidth / 3;
           const y = screenY / 3;
-          console.log('click', event);
           if (event.clientX > x && event.clientX < x * 2) {
             this.drawToggle();
           }
@@ -181,7 +178,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     const style = getComputedStyle(this.document.body);
     this.rendition.themes.default({ body: { color: style.color, font: style.font, padding: '20px' } });
     this.rendition.on('relocated', (location: any) => {
-      console.log(location);
     });
     this.book.ready.then(() => {
       const chars = 1650;
@@ -297,7 +293,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openSettingsDialog() {
     const settings = JSON.parse(localStorage.getItem(storageString));
-    console.log(this.rendition)
     const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
