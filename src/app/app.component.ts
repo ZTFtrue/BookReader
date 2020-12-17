@@ -80,7 +80,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
 
-
   }
 
   uploadFileClick() {
@@ -101,7 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   openBook(e: any) {
-
+    let vm = this;
     const bookData = e.target.result;
     this.book = ePub();
     this.book.open(bookData, 'binary');
@@ -127,12 +126,21 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.rendition.themes.fontSize('140%');
     }
     this.rendition.display();
-    // this.rendition.resize()
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
       // console.log(contents.addClass('iframe-html-body'));
       contents.innerHeight = contents.innerHeight * 2;
       if (el) {
+        el.addEventListener('click', (event: MouseEvent) => {
+          const screenX = event.screenX;
+          const screenY = event.screenY;
+          const x = screenX / 3;
+          const y = screenY / 3;
+          if (event.clientX > x && event.clientX < x * 2) {
+            console.log(vm.drawer);
+            vm.drawer.toggle();
+          }
+        })
         // Enable swipe gesture to flip a page
         let start: Touch;
         let end: Touch;
@@ -168,7 +176,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   defalt: 'bookreader-dark-theme',
     // });
     const style = getComputedStyle(this.document.body);
-    this.rendition.themes.default({ body: { color: style.color, font: style.font } });
+    this.rendition.themes.default({ body: { color: style.color, font: style.font, padding: '20px' } });
     this.rendition.on('relocated', (location: any) => {
       console.log(location);
     });
@@ -286,7 +294,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openSettingsDialog() {
     const settings = JSON.parse(localStorage.getItem(storageString));
-    console.log( this.rendition)
+    console.log(this.rendition)
     const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
