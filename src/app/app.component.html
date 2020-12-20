@@ -32,10 +32,12 @@
       </mat-tab>
     </mat-tab-group>
   </mat-drawer>
-  <mat-drawer-content (click)="drawer.toggle()">
-    <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
-      (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
-      <!-- <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button> -->
+  <mat-drawer-content>
+    <div (click)="drawer.toggle()" style="width: 100%;height:100%; margin: 20px 0px 20px 0px;">
+      <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
+        (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
+        <!-- <button class="main-search-button" (click)="search=true" *ngIf="showMainSearchButton">Search</button> -->
+      </div>
     </div>
     <div style="padding: 40px;height: 100%;" [hidden]="!search">
       <div class="contain-tool-bar-button" matRipple matTooltip="Back to read" (click)="search=false">
