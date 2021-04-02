@@ -4,6 +4,11 @@
     <mat-slider color="primary" class="bookreader-child-input-view" thumbLabel [displayWith]="formatLabel"
       tickInterval="150" min="50" (change)="fontSizeChange($event)" [(ngModel)]="value" max="200"></mat-slider>
   </mat-card-content>
+  <mat-card-content class="bookreader-child-input-view">
+    <mat-checkbox [(ngModel)]="openMenuClick" >
+      Checked to enable mouse open menu
+    </mat-checkbox>
+  </mat-card-content>
   <mat-form-field>
     <mat-label>Themes</mat-label>
     <mat-select (selectionChange)="onChangeTheme($event)" [(value)]="selectedTheme" matNativeControl required>

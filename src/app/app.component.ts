@@ -176,7 +176,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   keyboardEventControl() {
     this.eventListenerControl('keyup', this.keyboardAction.bind(this));
-    this.eventListenerControl('click', this.mouseClickAction.bind(this));
+    if (this.settings.openMenuClick) {
+      this.eventListenerControl('click', this.mouseClickAction.bind(this));
+    }
   }
 
   mouseClickAction(event: MouseEvent) {
@@ -310,6 +312,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openSettingsDialog() {
     const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
+    console.log(this.settings);
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
@@ -330,6 +333,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         }
         this.detector.run(() => (this.document.body.classList.replace(this.document.body.classList[0], result.theme)));
+        console.log(result)
         localStorage.setItem(storageString, JSON.stringify(result));
       }
     });

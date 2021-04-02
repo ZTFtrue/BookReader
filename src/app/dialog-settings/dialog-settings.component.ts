@@ -32,9 +32,9 @@ export class DialogSettingsComponent implements OnInit {
     if (data) {
       this.valueTemp = data.settings?.fontSizeValue?.replace('%', '');
       this.rendition = data.rendition;
+      this.openMenuClick = data.settings?.openMenuClick;
       this.themeTemp = this.data.settings.theme;
       this.lastTheme = this.themeTemp;
-      this.openMenuClick = data.openMenuClick;
       this.selectedTheme = this.lastTheme;
       this.value = this.valueTemp;
       this.changeValue = this.valueTemp;
