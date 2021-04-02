@@ -77,7 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.settings) {
       this.document.body.classList.replace(this.document.body.classList[0], this.settings.theme);
     } else {
-      this.settings = new Settings('140%', this.document.body.classList[0], false)
+      this.settings = new Settings('140%', this.document.body.classList[0], true)
     }
   }
 
@@ -205,12 +205,16 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   nextPage() {
     if (this.rendition) {
-      this.rendition.next();
+      this.detector.run(() => {
+        this.rendition.next();
+        setTimeout(() => { this.detector.run(() => { }) }, 100);
+      });
     }
   }
   previewPage() {
     if (this.rendition) {
       this.rendition.prev();
+      setTimeout(() => { this.detector.run(() => { }) }, 100);
     }
   }
   onKeyUp(event: number) { // without type info
@@ -335,6 +339,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.detector.run(() => (this.document.body.classList.replace(this.document.body.classList[0], result.theme)));
         console.log(result)
         localStorage.setItem(storageString, JSON.stringify(result));
+        // if(result.openMenuClick){
+        // this.rendition.on(event, (event: unknown) => {
+        //   action(event);
+        // });
+        // this.eventListenerControl('click', this.mouseClickAction.bind(this));
+        // }else{
+        // }
       }
     });
   }
