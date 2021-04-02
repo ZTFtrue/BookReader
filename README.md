@@ -2,6 +2,8 @@
 
 If you have question , please request issue.
 
+Press "m" on keyboard for open menu. 
+
 ## Preview
 
 [Online Preview go to](https://ztftrue.github.io/BookReader/)
