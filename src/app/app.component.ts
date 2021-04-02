@@ -138,7 +138,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rendition.display();
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
-      contents.innerHeight = contents.innerHeight * 2;
       if (el) {
         console.log(this.mobileCheck())
         if (this.mobileCheck()) {
