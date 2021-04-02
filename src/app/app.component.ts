@@ -20,10 +20,6 @@ const storageString = 'result';
 
 export class AppComponent implements OnInit, AfterViewInit {
 
-
-
-
-
   // Load the opf
   rendition: any = null;
   book: any = null;
@@ -32,7 +28,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   navigationData: any = null;
   testUrl: string;
   bookName: string = null;
-  theme: string;
+  settings: Settings;
   searchControl = new FormGroup({
     searchKeyWord: new FormControl(null, [
       Validators.required,
@@ -77,16 +73,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   ngOnInit(): void {
-    const settings = JSON.parse(localStorage.getItem(storageString));
-    if (settings) {
-      if (settings.theme) {
-        this.theme = settings.theme;
-        this.document.body.classList.replace(this.document.body.classList[0], settings.theme);
-      } else {
-        this.theme = this.document.body.classList[0];
-      }
+    this.settings = JSON.parse(localStorage.getItem(storageString));
+    if (this.settings) {
+      this.document.body.classList.replace(this.document.body.classList[0], this.settings.theme);
+    } else {
+      this.settings = new Settings('140%', this.document.body.classList[0], false)
     }
   }
+
   ngAfterViewInit(): void {
   }
 
@@ -129,34 +123,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     // this.rendition.spread('always',1000);
     // aslo can set px
-    const settings = JSON.parse(localStorage.getItem(storageString));
-    if (settings) {
-      this.rendition.themes.fontSize(settings.fontSizeValue);
-    } else {
-      this.rendition.themes.fontSize('140%');
-    }
+
+    this.rendition.themes.fontSize(this.settings.fontSizeValue);
     this.rendition.display();
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
       if (el) {
         console.log(this.mobileCheck())
-        if (this.mobileCheck()) {
-          el.addEventListener('click', (event: MouseEvent) => {
-            const screenY = window.screenY;
-            const x = this.screenWidth / 3;
-            const y = screenY / 3;
-            if (event.clientX > x && event.clientX < x * 2) {
-              this.drawToggle();
-            }
-          })
-        } else {
-          el.addEventListener('keyup', (event: KeyboardEvent) => {
-            console.log(event.code)
-            if (event.code === 'KeyM') {
-              this.drawToggle();
-            }
-          })
-        }
         // Enable swipe gesture to flip a page
         let start: Touch;
         let end: Touch;
@@ -178,16 +151,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.book.loaded.navigation.then((toc: any) => {
       this.navigationData = toc;
     });
-    this.rendition.on('keyup', (event: any) => {
-      // Left Key
-      if ((event.keyCode || event.which) === 37) {
-        this.previewPage();
-      }
-      // Right Key
-      if ((event.keyCode || event.which) === 39) {
-        this.nextPage();
-      }
-    });
     // this.rendition.themes.default({
     //   defalt: 'bookreader-dark-theme',
     // });
@@ -204,6 +167,39 @@ export class AppComponent implements OnInit, AfterViewInit {
         return this.rendition.display(stored);
       }
     });
+    this.keyboardEventControl();
+  }
+  eventListenerControl(event: String, action: Function) {
+    this.rendition.on(event, (event: unknown) => {
+      action(event);
+    });
+  }
+  keyboardEventControl() {
+    this.eventListenerControl('keyup', this.keyboardAction.bind(this));
+    this.eventListenerControl('click', this.mouseClickAction.bind(this));
+  }
+
+  mouseClickAction(event: MouseEvent) {
+    const screenY = window.screenY;
+    const x = window.innerWidth / 3;
+    const y = screenY / 3;
+    if (event.clientX > x && event.clientX < x * 2) {
+      this.drawToggle();
+    }
+  }
+
+  keyboardAction(event: KeyboardEvent) {
+    // Left Key
+    if (event.code === 'ArrowLeft') {
+      this.previewPage();
+    }
+    // Right Key
+    if (event.code === 'ArrowRight') {
+      this.nextPage();
+    }
+    if (event.code === 'KeyM') {
+      this.drawToggle();
+    }
   }
   nextPage() {
     if (this.rendition) {
@@ -313,14 +309,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   openSettingsDialog() {
-    const settings = JSON.parse(localStorage.getItem(storageString));
     const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
       data: {
-        settings: new Settings(settings ? settings.fontSizeValue : this.rendition?.themes._overrides['font-size'].value,
-          this.theme),
+        settings: this.settings,
         rendition: this.rendition
       }
     });
@@ -335,7 +329,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.rendition.display(location.cfi);
           }
         }
-        this.detector.run(() => (this.document.body.classList.replace(this.theme, result.theme)));
+        this.detector.run(() => (this.document.body.classList.replace(this.document.body.classList[0], result.theme)));
         localStorage.setItem(storageString, JSON.stringify(result));
       }
     });

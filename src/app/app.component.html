@@ -33,7 +33,7 @@
     </mat-tab-group>
   </mat-drawer>
   <mat-drawer-content>
-    <div (click)="drawer.toggle()">
+    <div (click)="drawer.toggle()" style="width: 100%;height: 100%;">
       <div id="viewer" [hidden]="search" appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
         (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
       </div>

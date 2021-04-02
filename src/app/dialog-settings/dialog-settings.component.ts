@@ -19,6 +19,7 @@ export class DialogSettingsComponent implements OnInit {
   rendition;
   selectedTheme: string;
   lastTheme: string;
+  openMenuClick: boolean;
   themes: BookReaderTheme[] = [
     { theme: 'bookreader-dark-theme', themeView: 'Dark Theme' },
     { theme: 'bookreader-amber-theme', themeView: 'Wood Theme' },
@@ -33,6 +34,7 @@ export class DialogSettingsComponent implements OnInit {
       this.rendition = data.rendition;
       this.themeTemp = this.data.settings.theme;
       this.lastTheme = this.themeTemp;
+      this.openMenuClick = data.openMenuClick;
       this.selectedTheme = this.lastTheme;
       this.value = this.valueTemp;
       this.changeValue = this.valueTemp;
@@ -61,7 +63,7 @@ export class DialogSettingsComponent implements OnInit {
     this.dialogRef.close(null);
   }
   confirm(): void {
-    this.dialogRef.close(new Settings(this.changeValue + '%', this.selectedTheme));
+    this.dialogRef.close(new Settings(this.changeValue + '%', this.selectedTheme, this.openMenuClick));
   }
   changeTheme(theme: string) {
     this.detector.run(() => (this.document.body.classList.replace(this.lastTheme, theme)));
