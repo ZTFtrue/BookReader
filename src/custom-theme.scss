@@ -1,9 +1,37 @@
-// 引入material的theming，其中包含了混入器
-@import '~@angular/material/theming';
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
-// 导入核心混入器，确保只导入一次
-@include mat-core();
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$reader-book-angular-primary: mat.define-palette(mat.$indigo-palette);
+$reader-book-angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$reader-book-angular-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$reader-book-angular-theme: mat.define-light-theme((
+  color: (
+    primary: $reader-book-angular-primary,
+    accent: $reader-book-angular-accent,
+    warn: $reader-book-angular-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($reader-book-angular-theme);
+
 
 // // 定义主调色板
 // $candy-app-primary: mat-palette($mat-indigo);
@@ -17,88 +45,88 @@
 
 
 // 定义个深色主题.
-$dark-primary: mat-palette($mat-gray);
-$dark-accent: mat-palette($mat-blue-gray, A700, 100, A900);
-$dark-warn: mat-palette($mat-pink, A500, A100, A900);
-$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+// $dark-primary: mat.define-palette(mat.$gray);
+// $dark-accent: mat-palette($mat-blue-gray, A700, 100, A200);
+// $dark-warn: mat-palette($mat-pink, A500, A100, A200);
+// $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
-.bookreader-dark-theme {
-  @include angular-material-theme($dark-theme);
-  $primary: map-get($dark-theme, primary);
-  $accent: map-get($dark-theme, accent);
-  $warn: map-get($dark-theme, warn);
-  color: white;
-}
+// .bookreader-dark-theme {
+//   @include angular-material-theme($reader-book-angular-theme);
+//   $primary: map-get($dark-theme, reader-book-angular-primary);
+//   $accent: map-get($dark-theme, reader-book-angular-accent);
+//   $warn: map-get($dark-theme, reader-book-angular-warn);
+//   color: white;
+// }
 
-$light-primary: mat-palette($mat-blue);
-$light-accent: mat-palette($mat-pink, A500, A900, A100);
-$light-warn: mat-palette($mat-deep-orange);
-$light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+// $light-primary: mat-palette($mat-blue);
+// $light-accent: mat-palette($mat-pink, A500, A200, A100);
+// $light-warn: mat-palette($mat-deep-orange);
+// $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
-.bookreader-light-theme {
-  @include angular-material-theme($light-theme);
-  $primary: map-get($dark-theme, primary);
-  $accent: map-get($dark-theme, accent);
-  $warn: map-get($dark-theme, warn);
-}
+// .bookreader-light-theme {
+//   @include angular-material-theme($light-theme);
+//   $primary: map-get($dark-theme, primary);
+//   $accent: map-get($dark-theme, accent);
+//   $warn: map-get($dark-theme, warn);
+// }
 
-// custom background and foreground palettes
-$bookreader-amber-theme-background: (status-bar: #e9d8ba,
-  app-bar: map_get($mat-amber, 200),
-  background: #e9d8ba,
-  background-color:#e9d8ba,
-  hover: rgba(white, 0.04),
-  card: #e9d8ba,
-  dialog:#e9d8ba,
-  disabled-button: $white-12-opacity,
-  raised-button: #e9d8ba,
-  focused-button: $white-6-opacity,
-  selected-button: map_get($mat-grey, 900),
-  selected-disabled-button: map_get($mat-grey, 800),
-  disabled-button-toggle: #e9d8ba,
-  unselected-chip: map_get($mat-grey, 700),
-  disabled-list-option: #e9d8ba,
-  text: black,
-);
+// // custom background and foreground palettes
+// $bookreader-amber-theme-background: (status-bar: #e9d8ba,
+//   app-bar: map_get($mat-amber, 200),
+//   background: #e9d8ba,
+//   background-color:#e9d8ba,
+//   hover: rgba(white, 0.04),
+//   card: #e9d8ba,
+//   dialog:#e9d8ba,
+//   disabled-button: $white-12-opacity,
+//   raised-button: #e9d8ba,
+//   focused-button: $white-6-opacity,
+//   selected-button: map_get($mat-grey, 800),
+//   selected-disabled-button: map_get($mat-grey, 800),
+//   disabled-button-toggle: #e9d8ba,
+//   unselected-chip: map_get($mat-grey, 700),
+//   disabled-list-option: #e9d8ba,
+//   text: black,
+// );
 
-$bookreader-amber-theme-foreground: (base: bisque,
-  divider: $white-12-opacity,
-  dividers: $white-12-opacity,
-  background: bisque,
-  background-color:bisque,
-  disabled: rgba(white, 0.3),
-  disabled-button: rgba(white, 0.3),
-  disabled-text: rgba(white, 0.3),
-  hint-text: rgba(white, 0.3),
-  secondary-text: rgba(white, 0.7),
-  icon: bisque,
-  icons: bisque,
-  text: black,
-  slider-min: black,
-  slider-off: rgba(white, 0.3),
-  slider-off-active: rgba(white, 0.3),
-);
+// $bookreader-amber-theme-foreground: (base: bisque,
+//   divider: $white-12-opacity,
+//   dividers: $white-12-opacity,
+//   background: bisque,
+//   background-color:bisque,
+//   disabled: rgba(white, 0.3),
+//   disabled-button: rgba(white, 0.3),
+//   disabled-text: rgba(white, 0.3),
+//   hint-text: rgba(white, 0.3),
+//   secondary-text: rgba(white, 0.7),
+//   icon: bisque,
+//   icons: bisque,
+//   text: black,
+//   slider-min: black,
+//   slider-off: rgba(white, 0.3),
+//   slider-off-active: rgba(white, 0.3),
+// );
 
-// instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
-@function create-bookreader-amber-theme($primary, $accent, $warn: mat-palette($mat-red)) {
-  @return (primary: $primary,
-    accent: $accent,
-    warn: $warn,
-    is-dark: false,
-    foreground: $bookreader-amber-theme-foreground,
-    background: $bookreader-amber-theme-background,
-  );
-}
+// // instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
+// @function create-bookreader-amber-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+//   @return (primary: $primary,
+//     accent: $accent,
+//     warn: $warn,
+//     is-dark: false,
+//     foreground: $bookreader-amber-theme-foreground,
+//     background: $bookreader-amber-theme-background,
+//   );
+// }
 
-// The rest of this is like a normal theme.scss file. The only difference being that we use create-wonky-theme instead of mat-light-theme
-$bookreader-amber-theme-primary: mat-palette($mat-gray, 500, 300, 900);
-$bookreader-amber-theme-accent: mat-palette($mat-gray, 700, 300, 900);
-$bookreader-amber-theme-warn: mat-palette($mat-red);
+// // The rest of this is like a normal theme.scss file. The only difference being that we use create-wonky-theme instead of mat-light-theme
+// $bookreader-amber-theme-primary: mat-palette($mat-gray, 500, 300, 800);
+// $bookreader-amber-theme-accent: mat-palette($mat-gray, 700, 300, 800);
+// $bookreader-amber-theme-warn: mat-palette($mat-red);
 
-$bookreader-amber-theme: create-bookreader-amber-theme($bookreader-amber-theme-primary, $bookreader-amber-theme-accent, $bookreader-amber-theme-warn);
+// $bookreader-amber-theme: create-bookreader-amber-theme($bookreader-amber-theme-primary, $bookreader-amber-theme-accent, $bookreader-amber-theme-warn);
 
-@include angular-material-theme($bookreader-amber-theme);
+// @include angular-material-theme($bookreader-amber-theme);
 
-.bookreader-amber-theme {
-  @include angular-material-theme($bookreader-amber-theme);
-}
+// .bookreader-amber-theme {
+//   @include angular-material-theme($bookreader-amber-theme);
+// }
