@@ -7,8 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { Settings } from './settings';
 import { DOCUMENT } from '@angular/common';
-// import { ePub  } from '@angular/core';
-declare var ePub: any;
+import ePub from "./ebup/index"
 
 const storageString = 'result';
 
@@ -108,7 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openBook(e: any) {
     const bookData = e.target.result;
-    this.book = ePub();
+    this.book = ePub(null,null);
     this.book.open(bookData, 'binary');
     this.rendition = this.book.renderTo('viewer', {
       method: 'continuous',

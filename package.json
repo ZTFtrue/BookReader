@@ -21,6 +21,12 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "@xmldom/xmldom": "^0.8.0",
+    "event-emitter": "^0.3.5",
+    "jszip": "^3.2.1",
+    "localforage": "^1.10.0",
+    "marks-pane": "^1.0.9",
+    "path-webpack": "^0.0.3",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
