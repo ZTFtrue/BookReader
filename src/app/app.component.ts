@@ -7,7 +7,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { Settings } from './settings';
 import { DOCUMENT } from '@angular/common';
-import ePub from "./ebup/index"
+import ePub, { Book, Rendition } from "./ebup/index"
+import { EventService } from './ebup/utils/EventService';
 
 const storageString = 'result';
 
@@ -20,8 +21,8 @@ const storageString = 'result';
 export class AppComponent implements OnInit, AfterViewInit {
 
   // Load the opf
-  rendition: any = null;
-  book: any = null;
+  rendition: Rendition = null;
+  book: Book = null;
   touchEventStart: TouchEmitter;
   touchEventLast: TouchEmitter;
   navigationData: any = null;
@@ -43,12 +44,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   screenWidth = 0;
   @ViewChild('inputfile') inputfile: ElementRef;
   @ViewChild('drawer') drawer: MatDrawer;
+  private eventService: EventService;
   constructor(
     public dialog: MatDialog,
     public detector: NgZone,
     private bottomSheet: MatBottomSheet,
     @Inject(DOCUMENT) private document: Document,
   ) {
+    this.eventService = EventService.getInstance();
     this.screenWidth = document.body.clientWidth;
   }
   @HostListener('window:unload', ['$event'])
@@ -67,7 +70,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   beforeUnloadHandler(event) {
     if (this.book) {
       const chars = 1650;
-      const key = `${this.book.key()}:locations-${chars}`;
+      const key = `${this.book.key(null)}:locations-${chars}`;
       localStorage.setItem(key, JSON.stringify(this.rendition.currentLocation().end.cfi));
     }
   }
@@ -78,6 +81,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else {
       this.settings = new Settings('140%', this.document.body.classList[0], true)
     }
+    this.eventService.messageObserve.subscribe((event: Event) => {
+      if (event) {
+        console.log(event.type)
+        if (event.type == 'keyup'
+        ) {
+          this.keyboardAction(event as KeyboardEvent)
+        } else if (event.type == 'contextmenu') {
+          this.drawToggle();
+          event.preventDefault();
+        }
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -107,7 +122,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openBook(e: any) {
     const bookData = e.target.result;
-    this.book = ePub(null,null);
+    this.book = ePub(null, null);
     this.book.open(bookData, 'binary');
     this.rendition = this.book.renderTo('viewer', {
       method: 'continuous',
@@ -124,7 +139,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // aslo can set px
 
     this.rendition.themes.fontSize(this.settings.fontSizeValue);
-    this.rendition.display();
+    this.rendition.display(null);
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
       if (el) {
@@ -155,11 +170,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     // });
     const style = getComputedStyle(this.document.body);
     this.rendition.themes.default({ body: { color: style.color, font: style.font, padding: '20px' } });
-    this.rendition.on('relocated', (location: any) => {
+    this.rendition.emitter.on('relocated', (location: any) => {
     });
     this.book.ready.then(() => {
       const chars = 1650;
-      const key = `${this.book.key()}:locations-${chars}`;
+      const key = `${this.book.key(null)}:locations-${chars}`;
       const stored = JSON.parse(localStorage.getItem(key));
       if (stored) {
         localStorage.removeItem(key);
@@ -169,7 +184,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.keyboardEventControl();
   }
   eventListenerControl(event: String, action: Function) {
-    this.rendition.on(event, (event: unknown) => {
+    this.rendition.emitter.on(event, (event: unknown) => {
       action(event);
     });
   }
@@ -331,7 +346,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           if (valueSizeTemp !== result.fontSizeValue) {
             const location = this.rendition.currentLocation().start;
             this.rendition.themes.fontSize(result.fontSizeValue);
-            this.rendition.display();
+            this.rendition.display(null);
             this.rendition.display(location.cfi);
           }
         }

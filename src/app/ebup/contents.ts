@@ -1,10 +1,9 @@
-import EventEmitter from "event-emitter";
 import { isNumber, prefixed, borders, defaults } from "./utils/core";
 import EpubCFI from "./epubcfi";
 import Mapping from "./mapping";
 import { replaceLinks } from "./utils/replacements";
 import { EPUBJS_VERSION, EVENTS, DOM_EVENTS } from "./utils/constants";
-import ee from 'event-emitter';
+import { EventService } from "./utils/EventService";
 
 const hasNavigator = typeof (navigator) !== "undefined";
 
@@ -40,12 +39,12 @@ class Contents {
 	observer
 	_resizeCheck
 	_triggerEvent
-	emitter = ee();
-
-	constructor(doc, content, cfiBase, sectionIndex) {
+	eventService: EventService
+	constructor(doc, content, cfiBase, sectionIndex,
+	) {
 		// Blank Cfi for Parsing
 		this.epubcfi = new EpubCFI(null, null, null);
-
+		this.eventService = EventService.getInstance();
 		this.document = doc;
 		this.documentElement = this.document.documentElement;
 		this.content = content || this.document.body;
@@ -394,11 +393,11 @@ class Contents {
 	}
 
 	/**
-	 * Event emitter for when the contents has expanded
+	 * Event eventService for when the contents has expanded
 	 * @private
 	 */
 	expand() {
-		this.emitter.emit(EVENTS.CONTENTS.EXPAND);
+		this.eventService.emitCall(EVENTS.CONTENTS.EXPAND);
 	}
 
 	/**
@@ -464,7 +463,7 @@ class Contents {
 			};
 
 			// this.onResize && this.onResize(this._size);
-			this.emitter.emit(EVENTS.CONTENTS.RESIZE, this._size);
+			this.eventService.emitCall(EVENTS.CONTENTS.RESIZE, this._size);
 		}
 	}
 
@@ -914,11 +913,11 @@ class Contents {
 		if (!this.document) {
 			return;
 		}
-
+		console.log(this.document)
 		this._triggerEvent = this.triggerEvent.bind(this);
 
 		DOM_EVENTS.forEach(function (eventName) {
-			this.document.addEventListener(eventName, this._triggerEvent, { passive: true });
+			this.document.addEventListener(eventName, this._triggerEvent, { passive: false });
 		}, this);
 
 	}
@@ -931,6 +930,7 @@ class Contents {
 		if (!this.document) {
 			return;
 		}
+
 		DOM_EVENTS.forEach(function (eventName) {
 			this.document.removeEventListener(eventName, this._triggerEvent, { passive: true });
 		}, this);
@@ -941,8 +941,13 @@ class Contents {
 	 * Emit passed browser events
 	 * @private
 	 */
-	triggerEvent(e) {
-		this.emitter.emit(e.type, e);
+	triggerEvent(event: Event) {
+		// console.log(e);
+		let txt: Selection = this.document.getSelection();
+	
+		if (txt.type.toLowerCase() != 'range' || event.type == 'keyup') {
+			this.eventService.emmitEvent(event)
+		}
 	}
 
 	/**
@@ -995,8 +1000,8 @@ class Contents {
 			if (!range.collapsed) {
 				// cfirange = this.section.cfiFromRange(range);
 				cfirange = new EpubCFI(range, this.cfiBase).toString();
-				this.emitter.emit(EVENTS.CONTENTS.SELECTED, cfirange);
-				this.emitter.emit(EVENTS.CONTENTS.SELECTED_RANGE, range);
+				this.eventService.emitCall(EVENTS.CONTENTS.SELECTED, cfirange);
+				this.eventService.emitCall(EVENTS.CONTENTS.SELECTED_RANGE, range);
 			}
 		}
 	}
@@ -1007,7 +1012,7 @@ class Contents {
 	 * @param {string} [ignoreClass]
 	 * @returns {Range} range
 	 */
-	range(_cfi, ignoreClass) {
+	range(_cfi, ignoreClass?) {
 		var cfi = new EpubCFI(_cfi, null, null);
 		return cfi.toRange(this.document, ignoreClass);
 	}
@@ -1211,7 +1216,7 @@ class Contents {
 	 */
 	linksHandler() {
 		replaceLinks(this.content, (href) => {
-			this.emitter.emit(EVENTS.CONTENTS.LINK_CLICKED, href);
+			this.eventService.emitCall(EVENTS.CONTENTS.LINK_CLICKED, href);
 		});
 	}
 
@@ -1219,7 +1224,7 @@ class Contents {
 	 * Set the writingMode of the text
 	 * @param {string} [mode="horizontal-tb"] "horizontal-tb" | "vertical-rl" | "vertical-lr"
 	 */
-	writingMode(mode=null) {
+	writingMode(mode = null) {
 		let WRITING_MODE = prefixed("writing-mode");
 
 		if (mode && this.documentElement) {
@@ -1284,7 +1289,5 @@ class Contents {
 
 	}
 }
-
-EventEmitter(Contents.prototype);
 
 export default Contents;

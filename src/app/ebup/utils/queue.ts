@@ -24,7 +24,7 @@ class Queue {
 	 * Add an item to the queue
 	 * @return {Promise}
 	 */
-	enqueue() {
+	enqueue(param,para2=null) {
 		var deferred, promise;
 		var queued;
 		var task = [].shift.call(arguments);

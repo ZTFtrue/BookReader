@@ -35,7 +35,7 @@ class IframeView {
 	_expanding
 	window
 	document
-	contents
+	contents:Contents;
 	rendering
 	writingMode
 	prevBounds
@@ -486,7 +486,7 @@ class IframeView {
 			this.document.querySelector("head").appendChild(link);
 		}
 
-		this.contents.on(EVENTS.CONTENTS.EXPAND, () => {
+		this.contents.eventService.on(EVENTS.CONTENTS.EXPAND, () => {
 			if (this.displayed && this.iframe) {
 				this.expand(null);
 				if (this.contents) {
@@ -495,7 +495,7 @@ class IframeView {
 			}
 		});
 
-		this.contents.on(EVENTS.CONTENTS.RESIZE, (e) => {
+		this.contents.eventService.on(EVENTS.CONTENTS.RESIZE, (e) => {
 			if (this.displayed && this.iframe) {
 				this.expand(null);
 				if (this.contents) {

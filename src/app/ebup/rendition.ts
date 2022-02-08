@@ -48,7 +48,7 @@ class Rendition {
 	themes;
 	annotations;
 	epubcfi;
-	q;
+	q:Queue;
 	location;
 	starting;
 	started;
@@ -704,6 +704,8 @@ class Rendition {
 	reportLocation() {
 		return this.q.enqueue(function reportedLocation() {
 			requestAnimationFrame(function reportedLocationAfterRAF() {
+				console.log('this',this)
+				console.log(this)
 				var location = this.manager.currentLocation();
 				if (location && location.then && typeof location.then === "function") {
 					location.then(function (result) {
@@ -715,7 +717,7 @@ class Rendition {
 
 						this.location = located;
 
-						this.emit(EVENTS.RENDITION.LOCATION_CHANGED, {
+						this.emitter.emit(EVENTS.RENDITION.LOCATION_CHANGED, {
 							index: this.location.start.index,
 							href: this.location.start.href,
 							start: this.location.start.cfi,
@@ -723,7 +725,7 @@ class Rendition {
 							percentage: this.location.start.percentage
 						});
 
-						this.emit(EVENTS.RENDITION.RELOCATED, this.location);
+						this.emitter.emit(EVENTS.RENDITION.RELOCATED, this.location);
 					}.bind(this));
 				} else if (location) {
 					let located = this.located(location);
@@ -745,7 +747,7 @@ class Rendition {
 					 * @property {number} percentage
 					 * @memberof Rendition
 					 */
-					this.emit(EVENTS.RENDITION.LOCATION_CHANGED, {
+					 this.emitter.emit(EVENTS.RENDITION.LOCATION_CHANGED, {
 						index: this.location.start.index,
 						href: this.location.start.href,
 						start: this.location.start.cfi,
@@ -758,7 +760,7 @@ class Rendition {
 					 * @type {displayedLocation}
 					 * @memberof Rendition
 					 */
-					this.emit(EVENTS.RENDITION.RELOCATED, this.location);
+					 this.emitter.emit(EVENTS.RENDITION.RELOCATED, this.location);
 				}
 			}.bind(this));
 		}.bind(this));
@@ -768,7 +770,7 @@ class Rendition {
 	 * Get the Current Location object
 	 * @return {displayedLocation | promise} location (may be a promise)
 	 */
-	currentLocation() {
+	currentLocation() :any{
 		var location = this.manager.currentLocation();
 		if (location && location.then && typeof location.then === "function") {
 			location.then(function (result) {
