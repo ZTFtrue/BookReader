@@ -23,7 +23,7 @@ const DOCUMENT_NODE = 9;
 	@param {string} [ignoreClass] class to ignore when parsing DOM
 */
 class EpubCFI {
-	str
+	str:String
 	base
 	spinePos
 	range

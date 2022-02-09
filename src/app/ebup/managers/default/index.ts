@@ -41,7 +41,7 @@ class DefaultViewManager {
 	_onScroll
 	resizeTimeout
 	emitter = ee();
-	private eventService: EventService=EventService.getInstance();
+	eventService: EventService = EventService.getInstance();
 
 	constructor(options) {
 
@@ -83,7 +83,7 @@ class DefaultViewManager {
 
 	}
 
-	render(element:any, size) {
+	render(element: HTMLElement, size) {
 		let tag = element?.tagName;
 		if (typeof this.settings.fullsize === "undefined" &&
 			tag && (tag.toLowerCase() == "body" ||
@@ -369,7 +369,7 @@ class DefaultViewManager {
 		this.emitter.emit(EVENTS.MANAGERS.RESIZE, view.section);
 	}
 
-	moveTo(offset, width) {
+	moveTo(offset, width?) {
 		var distX = 0,
 			distY = 0;
 

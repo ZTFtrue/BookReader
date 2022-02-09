@@ -44,13 +44,13 @@ import { Book } from ".";
  */
 class Rendition {
 	settings;
-	manager;
-	book:Book;
+	manager: DefaultViewManager | ContinuousViewManager;
+	book: Book;
 	hooks;
 	themes;
 	annotations;
 	epubcfi;
-	q:Queue;
+	q: Queue;
 	location;
 	starting;
 	started;
@@ -60,7 +60,7 @@ class Rendition {
 	displaying;
 	emitter = ee();
 
-	private eventService: EventService=EventService.getInstance();
+	private eventService: EventService = EventService.getInstance();
 
 	constructor(book, options) {
 		this.settings = extend(this.settings || {}, {
@@ -263,17 +263,17 @@ class Rendition {
 		this.layout(this.settings.globalLayoutProperties);
 
 		// Listen for displayed views
-		this.manager.on(EVENTS.MANAGERS.ADDED, this.afterDisplayed.bind(this));
-		this.manager.on(EVENTS.MANAGERS.REMOVED, this.afterRemoved.bind(this));
+		this.manager.eventService.on(EVENTS.MANAGERS.ADDED, this.afterDisplayed.bind(this));
+		this.manager.eventService.on(EVENTS.MANAGERS.REMOVED, this.afterRemoved.bind(this));
 
 		// Listen for resizing
 		this.eventService.on(EVENTS.MANAGERS.RESIZED, this.onResized.bind(this));
 
 		// Listen for rotation
-		this.manager.on(EVENTS.MANAGERS.ORIENTATION_CHANGE, this.onOrientationChange.bind(this));
+		this.manager.eventService.on(EVENTS.MANAGERS.ORIENTATION_CHANGE, this.onOrientationChange.bind(this));
 
 		// Listen for scroll changes
-		this.manager.on(EVENTS.MANAGERS.SCROLLED, this.reportLocation.bind(this));
+		this.manager.eventService.on(EVENTS.MANAGERS.SCROLLED, this.reportLocation.bind(this));
 
 		/**
 		 * Emit that rendering has started
@@ -292,16 +292,15 @@ class Rendition {
 	 * @param  {element} element to attach to
 	 * @return {Promise}
 	 */
-	attachTo(element:string) {
+	attachTo(element: HTMLElement) {
 
-		return this.q.enqueue(function () {
-
+		return this.q.enqueue(() => {
+			console.log('this', this)
 			// Start rendering
 			this.manager.render(element, {
 				"width": this.settings.width,
 				"height": this.settings.height
 			});
-
 			// /**
 			//  * Emit that rendering has attached to an element
 			//  * @event attached
@@ -309,7 +308,7 @@ class Rendition {
 			//  */
 			// this.emit(EVENTS.RENDITION.ATTACHED);
 
-		}.bind(this));
+		});
 
 	}
 
@@ -749,7 +748,7 @@ class Rendition {
 					 * @property {number} percentage
 					 * @memberof Rendition
 					 */
-					 this.emitter.emit(EVENTS.RENDITION.LOCATION_CHANGED, {
+					this.emitter.emit(EVENTS.RENDITION.LOCATION_CHANGED, {
 						index: this.location.start.index,
 						href: this.location.start.href,
 						start: this.location.start.cfi,
@@ -762,7 +761,7 @@ class Rendition {
 					 * @type {displayedLocation}
 					 * @memberof Rendition
 					 */
-					 this.emitter.emit(EVENTS.RENDITION.RELOCATED, this.location);
+					this.emitter.emit(EVENTS.RENDITION.RELOCATED, this.location);
 				}
 			}.bind(this));
 		}.bind(this));
@@ -772,7 +771,7 @@ class Rendition {
 	 * Get the Current Location object
 	 * @return {displayedLocation | promise} location (may be a promise)
 	 */
-	currentLocation() :any{
+	currentLocation(): any {
 		var location = this.manager.currentLocation();
 		if (location && location.then && typeof location.then === "function") {
 			location.then(function (result) {

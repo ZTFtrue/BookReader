@@ -596,10 +596,9 @@ class Book {
 	 * @param  {object} [options]
 	 * @return {Rendition}
 	 */
-	renderTo(element:any, options) {
+	renderTo(element:HTMLElement, options) {
 		this.rendition = new Rendition(this, options);
 		this.rendition.attachTo(element);
-
 		return this.rendition;
 	}
 

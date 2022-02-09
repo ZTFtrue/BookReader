@@ -54,13 +54,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.eventService = EventService.getInstance();
     this.screenWidth = document.body.clientWidth;
   }
-  @HostListener('window:unload', ['$event'])
-  unloadHandler(event) {
-    // ...
+  @HostListener('window:contextmenu', ['$event'])
+  contextmenuEvent(event) {
+    this.drawToggle();
+    event.preventDefault();
   }
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    console.log(event.code === 'KeyM')
     if (event.code === 'KeyM') {
       this.drawToggle();
     }
@@ -83,7 +83,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     this.eventService.messageObserve.subscribe((event: Event) => {
       if (event) {
-        console.log(event.type)
         if (event.type == 'keyup'
         ) {
           this.keyboardAction(event as KeyboardEvent)
@@ -126,7 +125,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     const bookData = e.target.result;
     this.book = ePub(null, null);
     this.book.open(bookData, 'binary');
-  
+
     this.rendition = this.book.renderTo(v, {
       method: 'continuous',
       // method: 'default',
