@@ -25,8 +25,8 @@ class Spine {
 		this.spineByHref = {};
 		this.spineById = {};
 
-		this.hooks.serialize = new Hook(null);
-		this.hooks.content = new Hook(null);
+		this.hooks.serialize = new Hook();
+		this.hooks.content = new Hook();
 
 		// Register replacements
 		this.hooks.content.register(replaceBase);
@@ -144,7 +144,7 @@ class Spine {
 				index += 1;
 			}
 		} else if (this.epubcfi.isCfiString(target)) {
-			let cfi = new EpubCFI(target,null,null);
+			let cfi = new EpubCFI(target, null, null);
 			index = cfi.spinePos;
 		} else if (typeof target === "number" || isNaN(target) === false) {
 			index = target;

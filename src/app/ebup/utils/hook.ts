@@ -6,9 +6,9 @@
  * @example this.content = new EPUBJS.Hook(this);
  */
 class Hook {
-	hooks
+	hooks:any[]
 	context
-	constructor(context){
+	constructor(context?){
 		this.context = context || this;
 		this.hooks = [];
 	}
@@ -17,7 +17,7 @@ class Hook {
 	 * Adds a function to be run before a hook completes
 	 * @example this.content.register(function(){...});
 	 */
-	register(){
+	register(...params){
 		for(var i = 0; i < arguments.length; ++i) {
 			if (typeof arguments[i]  === "function") {
 				this.hooks.push(arguments[i]);
