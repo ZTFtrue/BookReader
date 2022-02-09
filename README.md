@@ -12,9 +12,9 @@ Press "m" on keyboard for open menu.
 
 ![navigation](./screenshot/navigation.png)
 
-![钱](./screenshot/search1.png)
+![](./screenshot/search1.png)
 
-![女朋友](./screenshot/serach2.png)
+![](./screenshot/serach2.png)
 ![theme](./screenshot/theme.png)
 
 ## Development server

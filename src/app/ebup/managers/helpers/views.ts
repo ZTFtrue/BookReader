@@ -1,8 +1,10 @@
+import IframeView from "../views/iframe";
+
 class Views {
-	_views
-	length
-	container
-	hidden
+	_views: IframeView[]
+	length: number
+	container: HTMLElement
+	hidden: boolean
 	constructor(container) {
 		this.container = container;
 		this._views = [];
@@ -26,7 +28,7 @@ class Views {
 		return this._views.indexOf(view);
 	}
 
-	slice() {
+	slice(...callBack) {
 		return this._views.slice.apply(this._views, arguments);
 	}
 
@@ -80,7 +82,7 @@ class Views {
 		this.length--;
 	}
 
-	destroy(view) {
+	destroy(view: IframeView) {
 		if (view.displayed) {
 			view.destroy();
 		}
@@ -93,31 +95,26 @@ class Views {
 
 	// Iterators
 
-	forEach() {
+	forEach(...callBack) {
 		return this._views.forEach.apply(this._views, arguments);
 	}
 
 	clear() {
 		// Remove all views
-		var view;
+		var view: IframeView;
 		var len = this.length;
-
 		if (!this.length) return;
-
 		for (var i = 0; i < len; i++) {
 			view = this._views[i];
 			this.destroy(view);
 		}
-
 		this._views = [];
 		this.length = 0;
 	}
 
 	find(section) {
-
-		var view;
+		var view: IframeView;
 		var len = this.length;
-
 		for (var i = 0; i < len; i++) {
 			view = this._views[i];
 			if (view.displayed && view.section.index == section.index) {

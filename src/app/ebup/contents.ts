@@ -423,9 +423,6 @@ class Contents {
 		} else {
 			this.resizeObservers();
 		}
-
-		// this.mutationObservers();
-
 		this.linksHandler();
 	}
 
@@ -454,7 +451,7 @@ class Contents {
 	resizeCheck() {
 		let width = this.textWidth();
 		let height = this.textHeight();
-
+		console.log('resizeCheck');
 		if (width != this._size.width || height != this._size.height) {
 
 			this._size = {
@@ -553,26 +550,9 @@ class Contents {
 		this.observer = new ResizeObserver((e) => {
 			requestAnimationFrame(this.resizeCheck.bind(this));
 		});
-
 		// pass in the target node
+		console.log(this.document)
 		this.observer.observe(this.document.documentElement);
-	}
-
-	/**
-	 * Use MutationObserver to listen for changes in the DOM and check for resize
-	 * @private
-	 */
-	mutationObservers() {
-		// create an observer instance
-		this.observer = new MutationObserver((mutations) => {
-			this.resizeCheck();
-		});
-
-		// configuration of the observer:
-		let config = { attributes: true, childList: true, characterData: true, subtree: true };
-
-		// pass in the target node, as well as the observer options
-		this.observer.observe(this.document, config);
 	}
 
 	/**
@@ -913,13 +893,10 @@ class Contents {
 		if (!this.document) {
 			return;
 		}
-		console.log(this.document)
 		this._triggerEvent = this.triggerEvent.bind(this);
-
 		DOM_EVENTS.forEach(function (eventName) {
 			this.document.addEventListener(eventName, this._triggerEvent, { passive: false });
 		}, this);
-
 	}
 
 	/**
@@ -944,7 +921,7 @@ class Contents {
 	triggerEvent(event: Event) {
 		// console.log(e);
 		let txt: Selection = this.document.getSelection();
-	
+
 		if (txt.type.toLowerCase() != 'range' || event.type == 'keyup') {
 			this.eventService.emmitEvent(event)
 		}

@@ -36,7 +36,6 @@ class EpubCFI {
 		this.str = "";
 
 		this.base = {};
-		console.log(base)
 		this.spinePos = 0; // For compatibility
 
 		this.range = false; // true || false;

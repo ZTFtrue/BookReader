@@ -5,9 +5,9 @@ class Stage {
 	settings
 	resizeFunc
 	orientationChangeFunc
-	element
+	element: HTMLElement
 	id
-	container
+	container: HTMLElement
 	wrapper
 	sheet
 	containerStyles
@@ -46,7 +46,7 @@ class Stage {
 		}
 
 		// Create new container element
-		let container = document.createElement("div");
+		let container: HTMLElement = document.createElement("div");
 
 		container.id = this.id;
 		container.classList.add("epub-container");
@@ -110,11 +110,11 @@ class Stage {
 	}
 
 
-	getElement(_element) {
-		var element;
+	getElement(_element: any) {
+		let element: HTMLElement;
 
 		if (isElement(_element)) {
-			element = _element;
+			element = _element as HTMLElement;
 		} else if (typeof _element === "string") {
 			element = document.getElementById(_element);
 		}
@@ -140,7 +140,7 @@ class Stage {
 		} else {
 			base = this.container;
 		}
-
+		// element.remove();
 		element.appendChild(base);
 
 		this.element = element;
@@ -169,7 +169,7 @@ class Stage {
 		window.addEventListener("orientationchange", this.orientationChangeFunc, false);
 	}
 
-	size(width, height) {
+	size(width?, height?) {
 		var bounds;
 		let _width = width || this.settings.width;
 		let _height = height || this.settings.height;
@@ -352,20 +352,16 @@ class Stage {
 		var base;
 
 		if (this.element) {
-
 			if (this.settings.hidden) {
 				base = this.wrapper;
 			} else {
 				base = this.container;
 			}
-
 			if (this.element.contains(this.container)) {
 				this.element.removeChild(this.container);
 			}
-
 			window.removeEventListener("resize", this.resizeFunc);
 			window.removeEventListener("orientationChange", this.orientationChangeFunc);
-
 		}
 	}
 }

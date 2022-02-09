@@ -5,11 +5,18 @@ import { defer, requestAnimationFrame } from "./core";
  * @class
  * @param {scope} context what this will resolve to in the tasks
  */
+interface QueueData {
+	task?: Function;
+	args?;
+	deferred?;
+	promise: Promise<any>;
+}
+
 class Queue {
-	_q
-	running
-	paused
-	context
+	_q: QueueData[]
+	running: boolean
+	paused: boolean
+	context: Object
 	tick
 	defered
 	constructor(context) {
@@ -24,10 +31,12 @@ class Queue {
 	 * Add an item to the queue
 	 * @return {Promise}
 	 */
-	enqueue(param,para2=null) {
-		var deferred, promise;
-		var queued;
+	enqueue(param: Function | Promise<any>, ...p) {
+		let deferred;
+		let promise;
+		var queued: QueueData;
 		var task = [].shift.call(arguments);
+		console.log('task', task, arguments);
 		var args = arguments;
 
 		// Handle single args without context
@@ -76,16 +85,14 @@ class Queue {
 	 * @return {Promise}
 	 */
 	dequeue() {
-		var inwait, task, result;
+		var inwait: QueueData, task: Function, result: any;
 
 		if (this._q.length && !this.paused) {
 			inwait = this._q.shift();
 			task = inwait.task;
 			if (task) {
-				// console.log(task)
-
 				result = task.apply(this.context, inwait.args);
-
+				console.log('result', result)
 				if (result && typeof result["then"] === "function") {
 					// Task is a function that returns a promise
 					return result.then(function () {

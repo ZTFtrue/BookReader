@@ -7,9 +7,11 @@ import Stage from "../helpers/stage";
 import Views from "../helpers/views";
 import { EVENTS } from "../../utils/constants";
 import ee from 'event-emitter';
+import IframeView from "../views/iframe";
+import { EventService } from "../../utils/EventService";
 
 class DefaultViewManager {
-	views
+	views: Views
 	name
 	optsSettings
 	View
@@ -21,7 +23,7 @@ class DefaultViewManager {
 	layout
 	rendered
 	overflow
-	stage
+	stage: Stage
 	container
 	_bounds
 	_stageSize
@@ -39,6 +41,8 @@ class DefaultViewManager {
 	_onScroll
 	resizeTimeout
 	emitter = ee();
+	private eventService: EventService=EventService.getInstance();
+
 	constructor(options) {
 
 		this.name = "default";
@@ -79,9 +83,8 @@ class DefaultViewManager {
 
 	}
 
-	render(element, size) {
-		let tag = element.tagName;
-
+	render(element:any, size) {
+		let tag = element?.tagName;
 		if (typeof this.settings.fullsize === "undefined" &&
 			tag && (tag.toLowerCase() == "body" ||
 				tag.toLowerCase() == "html")) {
@@ -118,7 +121,7 @@ class DefaultViewManager {
 
 		// Calculate Stage Size
 		this._bounds = this.bounds();
-		this._stageSize = this.stage.size();
+		this._stageSize = this.stage.size(null, null);
 
 		// Set the dimensions for views
 		this.viewSettings.width = this._stageSize.width;
@@ -259,7 +262,7 @@ class DefaultViewManager {
 
 		this.updateLayout();
 
-		this.emitter.emit(EVENTS.MANAGERS.RESIZED, {
+		this.eventService.emitCall(EVENTS.MANAGERS.RESIZED, {
 			width: this._stageSize.width,
 			height: this._stageSize.height
 		}, epubcfi);
@@ -1076,7 +1079,7 @@ class DefaultViewManager {
 		if (!this.views) {
 			return contents;
 		}
-		this.views.forEach(function (view) {
+		this.views.forEach(function (view: IframeView) {
 			const viewContents = view && view.contents;
 			if (viewContents) {
 				contents.push(viewContents);

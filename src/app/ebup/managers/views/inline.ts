@@ -460,6 +460,4 @@ class InlineView {
 	}
 }
 
-EventEmitter(InlineView.prototype);
-
 export default InlineView;

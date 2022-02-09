@@ -21,12 +21,13 @@ export class EventService {
             callback();
         }
     }
-    public emitCall(message: any,param1?:any) {
+    public emitCall(message: any,...param1:any) {
         for (let eventName in this.emmitCall) {
             if(message==eventName){
                 for(let func of this.emmitCall[eventName]){
-                    func({message,param1});
+                    func({message,...param1});
                 }
+                break;
             }
         }
     }

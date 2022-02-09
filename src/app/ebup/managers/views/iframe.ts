@@ -97,8 +97,8 @@ class IframeView {
 		element.classList.add("epub-view");
 
 		// this.element.style.minHeight = "100px";
-		element.style.height = "0px";
-		element.style.width = "0px";
+		element.style.height = "100%";
+		element.style.width = "100%";
 		element.style.overflow = "hidden";
 		element.style.position = "relative";
 		element.style.display = "block";
@@ -123,7 +123,7 @@ class IframeView {
 
 		this.iframe = document.createElement("iframe");
 		this.iframe.id = this.id;
-		this.iframe.scrolling = "no"; // Might need to be removed: breaks ios width calculations
+		// this.iframe.scrolling = "no"; // Might need to be removed: breaks ios width calculations
 		this.iframe.style.overflow = "hidden";
 		this.iframe.seamless = "seamless";
 		// Back up if seamless isn't supported
@@ -143,8 +143,8 @@ class IframeView {
 		this.element.style.visibility = "hidden";
 		this.iframe.style.visibility = "hidden";
 
-		this.iframe.style.width = "0";
-		this.iframe.style.height = "0";
+		this.iframe.style.width = "100%";
+		this.iframe.style.height = "100%";
 		this._width = 0;
 		this._height = 0;
 
@@ -363,7 +363,7 @@ class IframeView {
 		// Only Resize if dimensions have changed or
 		// if Frame is still hidden, so needs reframing
 		if (this._needsReframe || width != this._width || height != this._height) {
-			this.reframe(width, height);
+			// this.reframe(width, height);
 		}
 
 		this._expanding = false;

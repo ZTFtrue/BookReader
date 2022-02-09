@@ -121,10 +121,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
   openBook(e: any) {
+    let v = this.document.getElementById('viewer');
+    v.childNodes.forEach((e) => v.removeChild(e));
     const bookData = e.target.result;
     this.book = ePub(null, null);
     this.book.open(bookData, 'binary');
-    this.rendition = this.book.renderTo('viewer', {
+  
+    this.rendition = this.book.renderTo(v, {
       method: 'continuous',
       // method: 'default',
       // manager: 'continuous',
@@ -173,8 +176,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rendition.emitter.on('relocated', (location: any) => {
     });
     this.book.ready.then(() => {
+      console.log('book ready')
       const chars = 1650;
       const key = `${this.book.key(null)}:locations-${chars}`;
+      console.log('key', key)
       const stored = JSON.parse(localStorage.getItem(key));
       if (stored) {
         localStorage.removeItem(key);

@@ -17,6 +17,8 @@ import IframeView from "./managers/views/iframe";
 import DefaultViewManager from "./managers/default/index";
 import ContinuousViewManager from "./managers/continuous/index";
 import ee from "event-emitter";
+import { EventService } from "./utils/EventService";
+import { Book } from ".";
 
 /**
  * Displays an Epub as a series of Views for each Section.
@@ -43,7 +45,7 @@ import ee from "event-emitter";
 class Rendition {
 	settings;
 	manager;
-	book;
+	book:Book;
 	hooks;
 	themes;
 	annotations;
@@ -57,8 +59,10 @@ class Rendition {
 	View;
 	displaying;
 	emitter = ee();
-	constructor(book, options) {
 
+	private eventService: EventService=EventService.getInstance();
+
+	constructor(book, options) {
 		this.settings = extend(this.settings || {}, {
 			width: null,
 			height: null,
@@ -263,7 +267,7 @@ class Rendition {
 		this.manager.on(EVENTS.MANAGERS.REMOVED, this.afterRemoved.bind(this));
 
 		// Listen for resizing
-		this.manager.on(EVENTS.MANAGERS.RESIZED, this.onResized.bind(this));
+		this.eventService.on(EVENTS.MANAGERS.RESIZED, this.onResized.bind(this));
 
 		// Listen for rotation
 		this.manager.on(EVENTS.MANAGERS.ORIENTATION_CHANGE, this.onOrientationChange.bind(this));
@@ -288,7 +292,7 @@ class Rendition {
 	 * @param  {element} element to attach to
 	 * @return {Promise}
 	 */
-	attachTo(element) {
+	attachTo(element:string) {
 
 		return this.q.enqueue(function () {
 
@@ -298,12 +302,12 @@ class Rendition {
 				"height": this.settings.height
 			});
 
-			/**
-			 * Emit that rendering has attached to an element
-			 * @event attached
-			 * @memberof Rendition
-			 */
-			this.emit(EVENTS.RENDITION.ATTACHED);
+			// /**
+			//  * Emit that rendering has attached to an element
+			//  * @event attached
+			//  * @memberof Rendition
+			//  */
+			// this.emit(EVENTS.RENDITION.ATTACHED);
 
 		}.bind(this));
 
@@ -486,7 +490,7 @@ class Rendition {
 		 * @param {string} epubcfi (optional)
 		 * @memberof Rendition
 		 */
-		this.emitter.emit(EVENTS.RENDITION.RESIZED, {
+		this.eventService.emitCall(EVENTS.RENDITION.RESIZED, {
 			width: size.width,
 			height: size.height
 		}, epubcfi);
@@ -704,8 +708,6 @@ class Rendition {
 	reportLocation() {
 		return this.q.enqueue(function reportedLocation() {
 			requestAnimationFrame(function reportedLocationAfterRAF() {
-				console.log('this',this)
-				console.log(this)
 				var location = this.manager.currentLocation();
 				if (location && location.then && typeof location.then === "function") {
 					location.then(function (result) {

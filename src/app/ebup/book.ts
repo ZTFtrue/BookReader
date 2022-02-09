@@ -49,7 +49,7 @@ const INPUT_TYPE = {
  * @example new Book({ replacements: "blobUrl" })
  */
 class Book {
-	opened
+	opened:Promise<any>
 	loading
 	loaded
 	ready
@@ -62,7 +62,7 @@ class Book {
 	resources
 	container
 	packaging
-	rendition
+	rendition:Rendition
 	displayOptions
 	navigation
 	url
@@ -596,7 +596,7 @@ class Book {
 	 * @param  {object} [options]
 	 * @return {Rendition}
 	 */
-	renderTo(element, options) {
+	renderTo(element:any, options) {
 		this.rendition = new Rendition(this, options);
 		this.rendition.attachTo(element);
 
