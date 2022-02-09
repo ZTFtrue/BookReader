@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   search = false;
   showMainSearchButton = false;
   screenWidth = 0;
+  isTouch = false;
   @ViewChild('inputfile') inputfile: ElementRef;
   @ViewChild('drawer') drawer: MatDrawer;
   private eventService: EventService;
@@ -79,18 +80,28 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.settings) {
       this.document.body.classList.replace(this.document.body.classList[0], this.settings.theme);
     } else {
-      this.settings = new Settings('140%', this.document.body.classList[0], true)
+      this.settings = new Settings('140%', this.document.body.classList[0])
     }
     this.eventService.messageObserve.subscribe((event: Event) => {
-      if (event) {
-        if (event.type == 'keyup'
-        ) {
+      if (!this.isTouch && event.type == 'touchstart') {
+        this.isTouch = true;
+      }
+      if (this.isTouch) {// Touch 类型
+        if (event.type == 'keyup') {
+          this.keyboardAction(event as KeyboardEvent)
+        } else if (event.type == 'click') {
+          this.drawToggle(event as MouseEvent);
+          event.preventDefault();
+        }
+      } else {
+        if (event.type == 'keyup') {
           this.keyboardAction(event as KeyboardEvent)
         } else if (event.type == 'contextmenu') {
           this.drawToggle();
           event.preventDefault();
         }
       }
+
     });
   }
 
@@ -114,10 +125,25 @@ export class AppComponent implements OnInit, AfterViewInit {
       reader.readAsArrayBuffer(file);
     }
   }
-  drawToggle(): void {
-    this.detector.run(() => {
-      this.drawer.toggle();
-    });
+  drawToggle(event?: MouseEvent): void {
+    console.log(event);
+    if (event) {
+      const x = window.innerWidth / 3;
+      if (event.clientX > x && event.clientX < x * 2) {
+        this.detector.run(() => {
+          this.drawer.toggle();
+        });
+      } else if (event.clientX < x / 2) {
+        this.previewPage()
+      } else if (event.clientX > window.innerWidth - x / 2) {
+        this.nextPage()
+      }
+    } else {
+      this.detector.run(() => {
+        this.drawer.toggle();
+      });
+    }
+
   }
   openBook(e: any) {
     let v = this.document.getElementById('viewer');
@@ -145,7 +171,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
       if (el) {
-        console.log(this.mobileCheck())
         // Enable swipe gesture to flip a page
         let start: Touch;
         let end: Touch;
@@ -178,34 +203,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       console.log('book ready')
       const chars = 1650;
       const key = `${this.book.key(null)}:locations-${chars}`;
-      console.log('key', key)
       const stored = JSON.parse(localStorage.getItem(key));
       if (stored) {
         localStorage.removeItem(key);
         return this.rendition.display(stored);
       }
     });
-    this.keyboardEventControl();
-  }
-  eventListenerControl(event: String, action: Function) {
-    this.rendition.emitter.on(event, (event: unknown) => {
-      action(event);
-    });
-  }
-  keyboardEventControl() {
-    this.eventListenerControl('keyup', this.keyboardAction.bind(this));
-    if (this.settings.openMenuClick) {
-      this.eventListenerControl('click', this.mouseClickAction.bind(this));
-    }
-  }
-
-  mouseClickAction(event: MouseEvent) {
-    const screenY = window.screenY;
-    const x = window.innerWidth / 3;
-    const y = screenY / 3;
-    if (event.clientX > x && event.clientX < x * 2) {
-      this.drawToggle();
-    }
   }
 
   keyboardAction(event: KeyboardEvent) {

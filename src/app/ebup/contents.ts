@@ -919,9 +919,7 @@ class Contents {
 	 * @private
 	 */
 	triggerEvent(event: Event) {
-		// console.log(e);
 		let txt: Selection = this.document.getSelection();
-
 		if (txt.type.toLowerCase() != 'range' || event.type == 'keyup') {
 			this.eventService.emmitEvent(event)
 		}

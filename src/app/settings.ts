@@ -1,10 +1,8 @@
 export class Settings {
   fontSizeValue: string;
-  openMenuClick: boolean;
   theme: string;
-  constructor(fontSizeValue: string, theme: string, openMenuClick: boolean) {
+  constructor(fontSizeValue: string, theme: string) {
     this.fontSizeValue = fontSizeValue;
     this.theme = theme;
-    this.openMenuClick = openMenuClick;
   }
 }
