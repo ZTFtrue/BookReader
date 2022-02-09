@@ -112,7 +112,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     })
     let observer = new MutationObserver((mutations) => {
       const style = getComputedStyle(this.document.body);
-      console.log(style)
       this.rendition?.themes?.override('color', style.color)
       mutations.forEach((mutation) => {
         console.log(mutation)
@@ -122,11 +121,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
     });
 
-    let observerConfig = {
+    let observerConfig:MutationObserverInit = {
       attributes: true,
       childList: false,
       characterData: false,
-      attributeOldValue: true
+      attributeOldValue: false
     };
 
     let targetNode = document.querySelector('body');
@@ -154,7 +153,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
   drawToggle(event?: MouseEvent): void {
-    console.log(event);
     if (event) {
       const x = window.innerWidth / 3;
       if (event.clientX > x && event.clientX < x * 2) {
@@ -361,7 +359,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openSettingsDialog() {
     const valueSizeTemp = this.rendition?.themes._overrides['font-size'].value;
-    console.log(this.settings);
     const dialogRef = this.dialog.open(DialogSettingsComponent, {
       width: '80vw',
       hasBackdrop: false,
@@ -382,7 +379,6 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         }
         this.detector.run(() => (this.document.body.classList.replace(this.document.body.classList[0], result.theme)));
-        console.log(result)
         localStorage.setItem(storageString, JSON.stringify(result));
       }
     });
