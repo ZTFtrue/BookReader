@@ -9,6 +9,7 @@ import { Settings } from './settings';
 import { DOCUMENT } from '@angular/common';
 import ePub, { Book, Rendition } from "./ebup/index"
 import { EventService } from './ebup/utils/EventService';
+import { EVENTS } from './ebup/utils/constants';
 
 const storageString = 'result';
 
@@ -103,6 +104,33 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
 
     });
+    this.eventService.on(EVENTS.CONTENTS.RESIZE, () => {
+      const style = getComputedStyle(this.document.body);
+      this.rendition?.themes?.default({ body: { color: style.color } });
+      this.rendition?.themes?.fontSize(this.settings.fontSizeValue);
+      this.rendition?.themes?.override('color', style.color)
+    })
+    let observer = new MutationObserver((mutations) => {
+      const style = getComputedStyle(this.document.body);
+      console.log(style)
+      this.rendition?.themes?.override('color', style.color)
+      mutations.forEach((mutation) => {
+        console.log(mutation)
+        // if (mutation.target.style.color === 'red') {
+        //   document.querySelector('p').textContent = 'success';
+        // }
+      });
+    });
+
+    let observerConfig = {
+      attributes: true,
+      childList: false,
+      characterData: false,
+      attributeOldValue: true
+    };
+
+    let targetNode = document.querySelector('body');
+    observer.observe(targetNode, observerConfig);
   }
 
   ngAfterViewInit(): void {
@@ -165,8 +193,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     // this.rendition.spread('always',1000);
     // aslo can set px
-
-    this.rendition.themes.fontSize(this.settings.fontSizeValue);
     this.rendition.display(null);
     this.rendition.hooks.content.register((contents: any) => {
       const el = contents.document.documentElement;
@@ -195,9 +221,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // this.rendition.themes.default({
     //   defalt: 'bookreader-dark-theme',
     // });
-    const style = getComputedStyle(this.document.body);
-    this.rendition.themes.default({ body: { color: style.color, font: style.font, padding: '20px' } });
-    this.rendition.emitter.on('relocated', (location: any) => {
+    this.rendition.eventService.on('relocated', (location: any) => {
     });
     this.book.ready.then(() => {
       console.log('book ready')
@@ -360,13 +384,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.detector.run(() => (this.document.body.classList.replace(this.document.body.classList[0], result.theme)));
         console.log(result)
         localStorage.setItem(storageString, JSON.stringify(result));
-        // if(result.openMenuClick){
-        // this.rendition.on(event, (event: unknown) => {
-        //   action(event);
-        // });
-        // this.eventListenerControl('click', this.mouseClickAction.bind(this));
-        // }else{
-        // }
       }
     });
   }

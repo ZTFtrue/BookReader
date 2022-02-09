@@ -1,6 +1,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use 'sass:map';
+@use '@angular/material'as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -19,13 +20,10 @@ $reader-book-angular-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$reader-book-angular-theme: mat.define-light-theme((
-  color: (
-    primary: $reader-book-angular-primary,
-    accent: $reader-book-angular-accent,
-    warn: $reader-book-angular-warn,
-  )
-));
+$reader-book-angular-theme: mat.define-light-theme((color: (primary: $reader-book-angular-primary,
+      accent: $reader-book-angular-accent,
+      warn: $reader-book-angular-warn,
+    )));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -45,30 +43,54 @@ $reader-book-angular-theme: mat.define-light-theme((
 
 
 // 定义个深色主题.
-// $dark-primary: mat.define-palette(mat.$gray);
+// $dark-primary: mat.define-palette(mat.$indigo-palette, 500);;
 // $dark-accent: mat-palette($mat-blue-gray, A700, 100, A200);
 // $dark-warn: mat-palette($mat-pink, A500, A100, A200);
 // $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
-// .bookreader-dark-theme {
-//   @include angular-material-theme($reader-book-angular-theme);
-//   $primary: map-get($dark-theme, reader-book-angular-primary);
-//   $accent: map-get($dark-theme, reader-book-angular-accent);
-//   $warn: map-get($dark-theme, reader-book-angular-warn);
-//   color: white;
-// }
+
+$dark-primary: mat.define-palette(mat.$pink-palette);
+$dark-accent: mat.define-palette(mat.$blue-gray-palette);
+$dark-theme: mat.define-dark-theme((
+ color: (
+   primary: $dark-primary,
+   accent: $dark-accent,
+ )
+));
+
+.bookreader-dark-theme {
+  @include mat.all-component-themes($dark-theme);
+  color: white;
+  //   @include angular-material-theme($reader-book-angular-theme);
+  //   $primary: map-get($dark-theme, reader-book-angular-primary);
+  //   $accent: map-get($dark-theme, reader-book-angular-accent);
+  //   $warn: map-get($dark-theme, reader-book-angular-warn);
+  //   color: white;
+}
 
 // $light-primary: mat-palette($mat-blue);
 // $light-accent: mat-palette($mat-pink, A500, A200, A100);
 // $light-warn: mat-palette($mat-deep-orange);
 // $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+@include mat.strong-focus-indicators((border-style: dotted,
+    border-width: 4px,
+    border-radius: 2px,
+  ));
 
-// .bookreader-light-theme {
-//   @include angular-material-theme($light-theme);
-//   $primary: map-get($dark-theme, primary);
-//   $accent: map-get($dark-theme, accent);
-//   $warn: map-get($dark-theme, warn);
-// }
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme((color: (primary: $my-primary,
+      accent: $my-accent,
+    )));
+.bookreader-light-theme {
+  @include mat.all-component-themes($my-theme);
+  // @include mat.strong-focus-indicators-theme(purple);
+  // @include angular-material-theme($light-theme);
+  // $primary: map-get($dark-theme, primary);
+  // $accent: map-get($dark-theme, accent);
+  // $warn: map-get($dark-theme, warn);
+}
 
 // // custom background and foreground palettes
 // $bookreader-amber-theme-background: (status-bar: #e9d8ba,

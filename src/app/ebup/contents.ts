@@ -551,7 +551,6 @@ class Contents {
 			requestAnimationFrame(this.resizeCheck.bind(this));
 		});
 		// pass in the target node
-		console.log(this.document)
 		this.observer.observe(this.document.documentElement);
 	}
 

@@ -47,7 +47,7 @@ class Rendition {
 	manager: DefaultViewManager | ContinuousViewManager;
 	book: Book;
 	hooks;
-	themes;
+	themes: Themes;
 	annotations;
 	epubcfi;
 	q: Queue;
@@ -60,7 +60,7 @@ class Rendition {
 	displaying;
 	emitter = ee();
 
-	private eventService: EventService = EventService.getInstance();
+	eventService: EventService = EventService.getInstance();
 
 	constructor(book, options) {
 		this.settings = extend(this.settings || {}, {
@@ -252,36 +252,26 @@ class Rendition {
 				settings: this.settings
 			});
 		}
-
 		this.direction(this.book.package.metadata.direction || this.settings.defaultDirection);
-
 		// Parse metadata to get layout props
 		this.settings.globalLayoutProperties = this.determineLayoutProperties(this.book.package.metadata);
-
 		this.flow(this.settings.globalLayoutProperties.flow);
-
 		this.layout(this.settings.globalLayoutProperties);
-
 		// Listen for displayed views
 		this.manager.eventService.on(EVENTS.MANAGERS.ADDED, this.afterDisplayed.bind(this));
 		this.manager.eventService.on(EVENTS.MANAGERS.REMOVED, this.afterRemoved.bind(this));
-
 		// Listen for resizing
 		this.eventService.on(EVENTS.MANAGERS.RESIZED, this.onResized.bind(this));
-
 		// Listen for rotation
 		this.manager.eventService.on(EVENTS.MANAGERS.ORIENTATION_CHANGE, this.onOrientationChange.bind(this));
-
 		// Listen for scroll changes
 		this.manager.eventService.on(EVENTS.MANAGERS.SCROLLED, this.reportLocation.bind(this));
-
 		/**
 		 * Emit that rendering has started
 		 * @event started
 		 * @memberof Rendition
 		 */
-		this.emitter.emit(EVENTS.RENDITION.STARTED);
-
+		this.manager.eventService.emitCall(EVENTS.RENDITION.STARTED);
 		// Start processing queue
 		this.starting.resolve();
 	}
@@ -295,7 +285,6 @@ class Rendition {
 	attachTo(element: HTMLElement) {
 
 		return this.q.enqueue(() => {
-			console.log('this', this)
 			// Start rendering
 			this.manager.render(element, {
 				"width": this.settings.width,
@@ -383,50 +372,7 @@ class Rendition {
 		return displayed;
 	}
 
-	/*
-	render(view, show) {
 
-		// view.onLayout = this.layout.format.bind(this.layout);
-		view.create();
-
-		// Fit to size of the container, apply padding
-		this.manager.resizeView(view);
-
-		// Render Chain
-		return view.section.render(this.book.request)
-			.then(function(contents){
-				return view.load(contents);
-			}.bind(this))
-			.then(function(doc){
-				return this.hooks.content.trigger(view, this);
-			}.bind(this))
-			.then(function(){
-				this.layout.format(view.contents);
-				return this.hooks.layout.trigger(view, this);
-			}.bind(this))
-			.then(function(){
-				return view.display();
-			}.bind(this))
-			.then(function(){
-				return this.hooks.render.trigger(view, this);
-			}.bind(this))
-			.then(function(){
-				if(show !== false) {
-					this.q.enqueue(function(view){
-						view.show();
-					}, view);
-				}
-				// this.map = new Map(view, this.layout);
-				this.hooks.show.trigger(view, this);
-				this.trigger("rendered", view.section);
-
-			}.bind(this))
-			.catch(function(e){
-				this.trigger("loaderror", e);
-			}.bind(this));
-
-	}
-	*/
 
 	/**
 	 * Report what section has been displayed
@@ -449,9 +395,11 @@ class Rendition {
 						 * @memberof Rendition
 						 */
 						this.emitter.emit(EVENTS.RENDITION.RENDERED, view.section, view);
+						this.eventService.emitCall(EVENTS.RENDITION.RENDERED);
 					});
 				} else {
 					this.emitter.emit(EVENTS.RENDITION.RENDERED, view.section, view);
+					this.eventService.emitCall(EVENTS.RENDITION.RENDERED);
 				}
 			});
 

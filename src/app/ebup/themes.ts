@@ -1,3 +1,4 @@
+import { Rendition } from ".";
 import Url from "./utils/url";
 
 /**
@@ -6,7 +7,7 @@ import Url from "./utils/url";
  * @param {Rendition} rendition
  */
 class Themes {
-	rendition
+	rendition: Rendition
 	_themes = {
 		"default": {
 			"rules": {},
@@ -111,7 +112,7 @@ class Themes {
 	 * @param {string} input
 	 */
 	registerUrl(name, input) {
-		var url = new Url(input,null);
+		var url = new Url(input, null);
 		this._themes[name] = { "url": url.toString() };
 		if (this._injected[name] || name == 'default') {
 			this.update(name);
@@ -213,9 +214,9 @@ class Themes {
 	 * @param {string} value
 	 * @param {boolean} priority
 	 */
-	override(name, value, priority=null) {
+	override(name:string, value:string, priority?:boolean) {
 		var contents = this.rendition.getContents();
-
+		console.log('contents',contents)
 		this._overrides[name] = {
 			value: value,
 			priority: priority === true
