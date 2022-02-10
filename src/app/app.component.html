@@ -1,0 +1,71 @@
+<mat-drawer-container class="main-container">
+  <mat-drawer onselectstart="return false" #drawer class="drawer-container" [opened]="true">
+    <div onselectstart="return false" class="menu-tool-bar">
+      <div class="menu-tool-bar-button" matRipple color="primary" (click)="uploadFileClick()">
+        <input #inputfile style="display: none" type="file" (change)="processFiles($event)" accept="file/*,.epub">
+        Open File
+      </div>
+      <div class="menu-tool-bar-button" matRipple mat-raised-button color="primary"
+        (click)="drawer.close();openSettingsDialog()">
+        Settings
+      </div>
+      <div class="menu-tool-bar-button" matRipple mat-raised-button (click)="fullScreen()" color="primary">
+        Full Screen
+      </div>
+      <div *ngIf="navigationData" class="menu-tool-bar-button" [hidden]="!drawer.opened&&navigationData" matRipple
+        matTooltip="Search Current Chapter" (click)="search=true;drawer.close();showMainSearchButton=true">
+        Search
+      </div>
+    </div>
+    <mat-tab-group *ngIf="navigationData" class="menu-tab-group">
+      <mat-tab label="Navigation">
+        <div matRipple class="navigation-item" *ngFor="let navigation of navigationData.toc"
+          (click)="selectNavigation($event, navigation)">
+          {{ navigation.label }}
+        </div>
+      </mat-tab>
+      <mat-tab label="BookMarks">
+
+      </mat-tab>
+      <mat-tab label="Notes">
+
+      </mat-tab>
+    </mat-tab-group>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div [hidden]="search" (click)="drawer.toggle()" style="width: 100%;height: 100%;">
+      <div id="viewer"  appTouchScreenEvent (touchOnMove)="touchOnMove($event)"
+        (onKeyUp)="onKeyUp(($event))" (touchOnStart)="touchOnStart($event)" (touchOnEnd)="touchOnEnd($event)">
+      </div>
+    </div>
+    <div style="padding: 40px;height: 100%;" [hidden]="!search">
+      <div class="contain-tool-bar-button" matRipple matTooltip="Back to read" (click)="search=false">
+        Back to read
+      </div>
+      <form class="bookreader-search-form-view" [formGroup]="searchControl" ovalidate
+        (ngSubmit)="onSubmit(searchControl.value)">
+        <mat-form-field appearance="legacy">
+          <mat-label>Input search word</mat-label>
+          <input matInput formControlName="searchKeyWord" name="searchWords" placeholder="Search word" />
+        </mat-form-field>
+        <section class="example-section">
+          <mat-checkbox class="example-margin" name="searchAll" formControlName="searchAll">Search All</mat-checkbox>
+        </section>
+        <button class="search-button" matRipple type="submit">Search</button>
+      </form>
+      <div *ngIf="!searching&&(resItems!=null&&resItems.length===0)">
+        No result
+      </div>
+      <div *ngIf="resItems" class="bookreader-search-res-view">
+        <div class="bookreader-search-res-item-view" *ngFor="let item of resItems">
+          {{ item.excerpt }}
+          <div class="search-button" onselectstart="return false" matRipple
+            (click)="selectNavigationForSearch($event, item)">Go to</div>
+        </div>
+      </div>
+      <mat-progress-bar *ngIf="searching" mode="indeterminate">
+      </mat-progress-bar>
+
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
