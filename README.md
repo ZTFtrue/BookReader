@@ -14,8 +14,6 @@ Touch screen "center" to open menu.
 
 Touch screen `right` and `left` to switch page.
 
-Touch screen `right` and `left` to switch page.
-
 ## Preview
 
 [Online Preview go to](https://ztftrue.github.io/BookReader/)
