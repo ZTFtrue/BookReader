@@ -2,7 +2,19 @@
 
 If you have question , please request issue.
 
-Press "m" on keyboard for open menu. 
+On computer:
+
+Press "m" or `right click` on keyboard to open menu.
+
+Press `right arrow` and `left arrow` switch page.
+
+On mobile phone:
+
+Touch screen "center" to open menu.
+
+Touch screen `right` and `left` to switch page.
+
+Touch screen `right` and `left` to switch page.
 
 ## Preview
 
