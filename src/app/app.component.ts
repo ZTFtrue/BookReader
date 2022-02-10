@@ -108,11 +108,13 @@ export class AppComponent implements OnInit, AfterViewInit {
       const style = getComputedStyle(this.document.body);
       this.rendition?.themes?.default({ body: { color: style.color } });
       this.rendition?.themes?.fontSize(this.settings.fontSizeValue);
-      this.rendition?.themes?.override('color', style.color)
+      this.rendition?.themes?.override('color', style.color);
+      this.rendition?.themes?.override('background', 'transparent')
     })
     let observer = new MutationObserver((mutations) => {
       const style = getComputedStyle(this.document.body);
       this.rendition?.themes?.override('color', style.color)
+      this.rendition?.themes?.override('background', 'transparent')
       mutations.forEach((mutation) => {
         console.log(mutation)
         // if (mutation.target.style.color === 'red') {
